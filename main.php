@@ -15,3 +15,6 @@
 
 include("inc/curl.inc.php");
 set_time_limit(0);
+
+$prod = new zdCurl("production");
+echo "lol hi";

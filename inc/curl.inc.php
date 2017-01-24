@@ -1,4 +1,5 @@
 <?php
+namespace ZenDump;
 class ZdCurl {
 
   public $environment;
@@ -8,8 +9,8 @@ class ZdCurl {
   public function __construct($environment) {
     $envFile = ".env";
     $environments = json_decode(file_get_contents($envFile));
-    $this->user = $environments->$environment->user;
-    $this->pass = $environments->$environment->pass;
+    $this->user = $environments->$environment->username;
+    $this->pass = $environments->$environment->password;
     $this->baseUrl = $environments->$environment->url;
 
 

@@ -1,0 +1,12 @@
+{
+    "require": {
+	"slim/slim": "3.*",
+        "illuminate/database": "*",
+        "robmorgan/phinx": "*"
+    },
+    "autoload":{
+      "psr-4": {
+        "ZenDump\\": "."
+      }
+    }
+}

@@ -28,3 +28,10 @@ Temporary Items
 .env
 test_zendesk.py
 satisfaction.py
+ticket.php
+enduser.php
+usersearch.php
+requestedtickets.php
+vendor/
+.db.env
+composer.lock
