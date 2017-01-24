@@ -6,6 +6,11 @@ class Agent extends \Illuminate\Database\Eloquent\Model {
     public $table = 'agents';
 }
 
+class Comment extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'comments';
+}
+
 class EndUser extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
     public $table = 'endusers';

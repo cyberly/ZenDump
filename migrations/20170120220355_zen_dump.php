@@ -19,6 +19,13 @@ class ZenDump extends Migration
             //May need to add a column for groups, but will need a separate API call.
             //$table->timestamps();
         });
+        $this->schema->create('comments', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->integer('id');
+            $table->string('name');
+            $table->string('email');
+            $table->primary('id');
+            //$table->timestamps();
+        });
 
         $this->schema->create('endusers', function(Illuminate\Database\Schema\Blueprint $table){
             $table->integer('id');
@@ -36,7 +43,6 @@ class ZenDump extends Migration
 
         $this->schema->create('tickets', function(Illuminate\Database\Schema\Blueprint $table){
             $table->integer('id');
-            $table->integer('serial_number');
             $table->string('name');
             $table->primary('id');
             //$table->timestamps();
