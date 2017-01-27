@@ -21,7 +21,7 @@ include("inc/models.inc.php");
 set_time_limit(0);
 $startTime = microtime(true);
 $prod = new zdCurl("production");
-$ticketList = TicketList::all();
+$ticketList = TicketList$ticketList = TicketList::select("id")->skip(187200)->take(31200)->get();
 $ticketCount = count($ticketList);
 $currentRun = 0;
 echo "Processing $ticketCount tickets.", PHP_EOL;
