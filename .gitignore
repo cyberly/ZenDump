@@ -34,4 +34,4 @@ usersearch.php
 requestedtickets.php
 vendor/
 .db.env
-composer.lock
+queryTest.php

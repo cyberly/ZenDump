@@ -10,12 +10,12 @@ class ZenDump extends Migration
         $this->schema->create('agents', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigInteger('id');
-            $table->string('name');
-            $table->string('alias');
-            $table->string('email');
-            $table->string('role');
-            $table->text('signature');
-            $table->boolean('suspended');
+            $table->string('name')->nullable();
+            $table->string('alias')->nullable();
+            $table->string('email')->nullable();
+            $table->string('role')->nullable();
+            $table->text('signature')->nullable();
+            $table->boolean('suspended')->nullable();
             $table->primary('id');
             //May need to add a column for groups, but will need a separate API call.
             //$table->timestamps();
@@ -24,13 +24,13 @@ class ZenDump extends Migration
         $this->schema->create('attachments', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigInteger('id');
-            $table->bigInteger('ticket_id');
-            $table->bigInteger('event_id');
-            $table->bigInteger('action_id');
-            $table->longText('file_name');
-            $table->longText('url');
-            $table->longText('content_url');
-            $table->string('content_type');
+            $table->bigInteger('ticket_id')->nullable();
+            $table->bigInteger('event_id')->nullable();
+            $table->bigInteger('action_id')->nullable();
+            $table->longText('file_name')->nullable();
+            $table->longText('url')->nullable();
+            $table->longText('content_url')->nullable();
+            $table->string('content_type')->nullable();
             $table->primary('id');
             //May need to add a column for groups, but will need a separate API call.
             //$table->timestamps();
@@ -38,9 +38,9 @@ class ZenDump extends Migration
 
         $this->schema->create('endusers', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
-            $table->integer('id');
-            $table->string('name');
-            $table->string('email');
+            $table->bigInteger('id');
+            $table->string('name')->nullable();
+            $table->string('email')->nullable();
             $table->primary('id');
             //$table->timestamps();
         });
@@ -48,10 +48,10 @@ class ZenDump extends Migration
         $this->schema->create('errors', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigIncrements('id');
-            $table->string('severity');
-            $table->longText('request');
-            $table->string('status');
-            $table->dateTime('time');
+            $table->string('severity')->nullable();
+            $table->longText('request')->nullable();
+            $table->string('status')->nullable();
+            $table->dateTime('time')->nullable();
             //$table->primary('id');
             //$table->timestamps();
         });
@@ -59,27 +59,27 @@ class ZenDump extends Migration
         $this->schema->create('event_actions', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigInteger('id');
-            $table->bigInteger('event_id');
-            $table->string('type');
-            $table->string('field_name');
+            $table->bigInteger('event_id')->nullable();
+            $table->string('type')->nullable();
+            $table->string('field_name')->nullable();
             $table->longText('value')->nullable();
             $table->longText('previous_value')->nullable();
-            $table->longText('body');
-            $table->boolean('public');
-            $table->bigInteger('author_id');
+            $table->longText('body')->nullable();
+            $table->boolean('public')->nullable();
+            $table->bigInteger('author_id')->nullable();
             $table->string('channel')->nullable();
             $table->string('channel_id')->nullable();
             $table->text('channel_name')->nullable();
-            $table->primary('id');
+            $table->primary('id')->nullable();
             //$table->timestamps();
         });
 
         $this->schema->create('groups', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigInteger('id');
-            $table->string('name');
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+            $table->string('name')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
             //$table->primary('job_id');
             //$table->timestamps();
         });
@@ -87,19 +87,19 @@ class ZenDump extends Migration
         $this->schema->create('group_memberships', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigInteger('id');
-            $table->bigInteger('user_id');
-            $table->bigInteger('group_id');
-            $table->boolean("default");
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
+            $table->bigInteger('user_id')->nullable();
+            $table->bigInteger('group_id')->nullable();
+            $table->boolean("default")->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
             //$table->primary('job_id');
             //$table->timestamps();
         });
 
         $this->schema->create('meta', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
-            $table->integer('job_id');
-            $table->primary('job_id');
+            $table->integer('job_id')->nullable();
+            $table->primary('job_id')->nullable();
             //Not honestly sure what this is going ot be used for yet.
             //$table->timestamps();
         });
@@ -107,15 +107,15 @@ class ZenDump extends Migration
         $this->schema->create('tickets', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigInteger('id');
-            $table->string('channel');
-            $table->string('recieved_from');
-            $table->bigInteger('submitter_id');
-            $table->bigInteger('requester_id');
-            $table->dateTime('created_at');
-            $table->dateTime('updated_at');
-            $table->string('type');
-            $table->longText('subject');
-            $table->string("status");
+            $table->string('channel')->nullable();
+            $table->string('recieved_from')->nullable();
+            $table->bigInteger('submitter_id')->nullable();
+            $table->bigInteger('requester_id')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
+            $table->string('type')->nullable();
+            $table->longText('subject')->nullable();
+            $table->string("status")->nullable();
             $table->primary('id');
             //$table->foreign('user_id')->references('id')->on('users');
             //$table->timestamps();
@@ -124,9 +124,9 @@ class ZenDump extends Migration
         $this->schema->create('ticket_events', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigInteger('id');
-            $table->bigInteger('ticket_id');
-            $table->dateTime('created_at');
-            $table->string('channel');
+            $table->bigInteger('ticket_id')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->string('channel')->nullable();
             $table->string('source_ip')->nullable();
             $table->primary('id');
             //$table->timestamps();

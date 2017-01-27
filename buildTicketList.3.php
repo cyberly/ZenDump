@@ -22,7 +22,7 @@ $startTime = microtime(true);
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $ticketCount = FALSE;
-$search = "type:ticket created>2016-01-01 fieldvalue:accnt*";
+$search = "type:ticket created>2016-07-01 created<2016-010-01 fieldvalue:accnt*";
 //$search = "type:ticket cbyerly@gmail.com";
 $endpoint = "/search.json?query=" . urlencode($search);
 
