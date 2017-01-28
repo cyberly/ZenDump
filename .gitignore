@@ -35,3 +35,4 @@ requestedtickets.php
 vendor/
 .db.env
 queryTest.php
+test.php
