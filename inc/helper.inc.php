@@ -68,7 +68,6 @@ class Helper{
            if ($e["via"]["channel"] == "rule"){
                if(isset($e["via"]["source"]["rel"])){
                    $action->channel = $e["via"]["source"]["rel"];
-                   echo $e["via"]["source"]["rel"];
                }
                $action->channel_id = $e["via"]["source"]["from"]["id"];
                $action->channel_name = $e["via"]["source"]["from"]["title"];
