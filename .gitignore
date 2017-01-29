@@ -36,3 +36,4 @@ vendor/
 .db.env
 queryTest.php
 test.php
+ids.txt

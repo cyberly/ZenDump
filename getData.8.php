@@ -20,7 +20,7 @@ include("inc/models.inc.php");
 include("inc/helper.inc.php");
 
 set_time_limit(0);
-$fileId = 0;
+$fileId = 7;
 $chunkSize = 38650;
 $skip = $chunkSize * $fileId;
 $startTime = microtime(true);
