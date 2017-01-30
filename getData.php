@@ -25,7 +25,8 @@ $chunkSize = 38650;
 $skip = $chunkSize * $fileId;
 $startTime = microtime(true);
 $prod = new zdCurl("production");
-$ticketList = TicketList::select("id")->skip($skip)->take($chunkSize)->get();
+$ticketList = array(1169149,979845,805163,1207888,980757,1068198,943677,987127,911438,1227778,980996,1177379,981052,919449,981310,869705,981340,1015747,981448,981540,919073,981558,979765,1261293,920602,1009966,981592,981606,981618,981636,981639,994504,981650,1129955,1229079,981668,1070670,981672,981681,1012302,944061,808883,1248830,1208022,981687,981692,807424,1071337,981700,981718);
+//$ticketList = TicketList::select("id")->skip($skip)->take($chunkSize)->get();
 $ticketCount = count($ticketList);
 $currentRun = 0;
 echo "Processing $ticketCount tickets.", PHP_EOL;
@@ -35,7 +36,7 @@ foreach($ticketList as $t){
         $percentComplete = round(($currentRun / $ticketCount) * 100, 2);
         echo "Progress: $percentComplete%\r";
     }
-    $searchId = $t->id;
+    $searchId = $t;//->id;
     $lastPage = FALSE;
     $endpoint = "/tickets/$searchId/audits.json?include=users,groups,tickets";
     $errorCount = 0;
@@ -67,7 +68,7 @@ foreach($ticketList as $t){
             $ticket = Ticket::find($ticketData["id"]);
             if ($ticket === NULL){
                 $ticket = new Ticket;
-                $ticket->id = $ticketData["id"];
+                $ticket->ticket_id = $ticketData["id"];
                 $ticket->channel = $ticketData["via"]["channel"];
                 if ($ticket->channel == "email"){
                     $ticket->recieved_from = $ticketData["via"]["source"]["from"]["address"];
@@ -88,10 +89,10 @@ foreach($ticketList as $t){
                 if ($user["role"] == "end-user") {
                     //Instantiate DB lolz
                     //Put it in the DB if it doesn't exist.
-                    $endUser = EndUser::find($user["id"]);
+                    $endUser = User::find($user["id"]);
                     if ($endUser === NULL) {
-                        $endUser = new EndUser;
-                        $endUser->id = $user["id"];
+                        $endUser = new User;
+                        $endUser->user_id = $user["id"];
                         $endUser->name = $user["name"];
                         $endUser->email = $user["email"];
                         $endUser->save();
@@ -107,7 +108,7 @@ foreach($ticketList as $t){
                 if ($event === NULL){
                     $event = new Event;
                 }
-                $event->id = $t_event["id"];
+                $event->event_id = $t_event["id"];
                 $event->ticket_id = $t_event["ticket_id"];
                 $event->created_at = $t_event["created_at"];
                 $event->channel = $t_event["via"]["channel"];

@@ -35,9 +35,9 @@ while(!$lastPage){
     }
     $agents = $data["results"];
     foreach ($agents as $agent){
-        $user = new Agent;
+        $user = new User;
         //All DB fields should be populated except signature and alias.
-        $user->id = $agent["id"];
+        $user->user_id = $agent["id"];
         $user->name = $agent["name"];
         $user->email = $agent["email"];
         if ($agent["alias"]){

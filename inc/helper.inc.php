@@ -13,7 +13,7 @@ class Helper{
         if ($action === NULL){
             $action = new Action;
         }
-       $action->id = $a["id"];
+       $action->action_id = $a["id"];
        $action->event_id = $e["id"];
        $action->type = $a["type"];
        if ($a["type"] == "Comment"){
@@ -25,7 +25,7 @@ class Helper{
                    $attachment = Attachment::find($att["id"]);
                    if ($attachment === NULL){
                        $attachment = new Attachment;
-                       $attachment->id = $att["id"];
+                       $attachment->attachment_id = $att["id"];
                        $attachment->ticket_id = $t_id;
                        $attachment->event_id = $e["id"];
                        $attachment->action_id = $action->id;
