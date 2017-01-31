@@ -77,6 +77,8 @@ foreach($ticketList as $t){
                 $ticket->subject = $ticketData["subject"];
                 $ticket->submitter_id = $ticketData["submitter_id"];
                 $ticket->requester_id = $ticketData["requester_id"];
+                $ticket->group_id = $ticketData["group_id"];
+                $ticket->assignee_id = $ticketData["assignee_id"];
             }
             $ticket->status = $ticketData["status"];
             $ticket->updated_at = $ticketData["updated_at"];
