@@ -86,23 +86,7 @@ foreach($ticketList as $t){
             $ticket->save();
 
             //Let's build the end-user data.
-            $users = $data["users"];
-            foreach ($users as $user) {
-                if ($user["role"] == "end-user") {
-                    //Instantiate DB lolz
-                    //Put it in the DB if it doesn't exist.
-                    $endUser = User::find($user["id"]);
-                    if ($endUser === NULL) {
-                        $endUser = new User;
-                        $endUser->user_id = $user["id"];
-                        $endUser->name = $user["name"];
-                        $endUser->email = $user["email"];
-                        $endUser->save();
-                    }
-                }
-                unset($user);
-                unset($endUser);
-            }
+            Helper::saveUser($data["users"]);
             //Build event data to iterate through actions.
             $events = $data["audits"];
             foreach ($events as $t_event){

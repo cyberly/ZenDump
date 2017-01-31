@@ -34,8 +34,6 @@ class Helper{
                        $attachment->content_url = $att["content_url"];
                        $attachment->content_type = $att["content_type"];
                        $attachment->save();
-                       unset($a);
-                       unset($attachment);
                    }
                }
            }
@@ -78,5 +76,21 @@ class Helper{
            return FALSE;
        }
        //Save the event here to prevent saving empty events if this doesn't trip.
+    }
+
+    public static function saveUser($user_array){
+        foreach ($user_array as $u) {
+            if ($u["role"] == "end-user") {
+                $user = User::find($u["id"]);
+                if ($user === NULL) {
+                    $user = new User;
+                }
+                    $user->user_id = $u["id"];
+                    $user->name = $u["name"];
+                    $user->email = $u["email"];
+                    $user->role = $u["role"];
+                    $user->save();
+            }
+        }
     }
 }
