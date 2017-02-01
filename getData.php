@@ -44,72 +44,21 @@ foreach($ticketList as $t){
         $data = $prod->get($endpoint)->response;
         if ($prod->status != "200"){
             if ($errorCount <= 4) {
-                $error = new Error;
-                $error->severity = "soft";
-                $error->request = $searchId;
-                $error->status = $prod->status;
-                $error->time = date("Y-m-d H:i:s");
-                $error->save();
+                Helper::saveError("soft", $searchId, $prod->status);
                 usleep(500000);
                 $errorCount++;
             } else {
-                $error = new Error;
-                $error->severity = "hard";
-                $error->request = $searchId;
-                $error->status = $prod->status;
-                $error->time = date("Y-m-d H:i:s");
-                $error->save();
+                Helper::saveError("hard", $searchId, $prod->status);
                 break;
             }
         } else {
             //Let's build the ticket data.
             $ticketData = $data["tickets"][0];
-            $ticket_id = $ticketData["id"];
-            $ticket = Ticket::find($ticketData["id"]);
-            if ($ticket === NULL){
-                $ticket = new Ticket;
-                $ticket->ticket_id = $ticketData["id"];
-                $ticket->channel = $ticketData["via"]["channel"];
-                if ($ticket->channel == "email"){
-                    $ticket->recieved_from = $ticketData["via"]["source"]["from"]["address"];
-                }
-                $ticket->created_at = $ticketData["created_at"];
-                $ticket->subject = $ticketData["subject"];
-                $ticket->submitter_id = $ticketData["submitter_id"];
-                $ticket->requester_id = $ticketData["requester_id"];
-                $ticket->group_id = $ticketData["group_id"];
-                $ticket->assignee_id = $ticketData["assignee_id"];
-            }
-            $ticket->status = $ticketData["status"];
-            $ticket->updated_at = $ticketData["updated_at"];
-            $ticket->type = $ticketData["type"];
-            $ticket->save();
-
-            //Let's build the end-user data.
+            Helper::saveTicket($ticketData);
             Helper::saveUser($data["users"]);
             //Build event data to iterate through actions.
             $events = $data["audits"];
-            foreach ($events as $t_event){
-                $event = Event::find($t_event["id"]);
-                if ($event === NULL){
-                    $event = new Event;
-                }
-                $event->event_id = $t_event["id"];
-                $event->ticket_id = $t_event["ticket_id"];
-                $event->created_at = $t_event["created_at"];
-                $event->channel = $t_event["via"]["channel"];
-                if (isset($t_event["metadata"]["system"]["ip_address"])){
-                    $event->source_ip = $t_event["metadata"]["system"]["ip_address"];
-                }
-                //$ticketId needs to go in the events table here as well.
-                foreach ($t_event["events"] as $t_action){
-
-                    $actionSaved = Helper::saveAction($t_action, $t_event, $ticketData["id"]);
-                    if ($actionSaved){
-                        $event->save();
-                    }
-                }
-            }
+            Helper::saveEvents($events, $ticketData["id"]);
             if (!$data["next_page"]){
                 $lastPage = TRUE;
             } else {

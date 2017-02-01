@@ -4,8 +4,7 @@ namespace ZenDump;
 class Helper{
 
     public function __constructor(){
-        //stuff lol
-        $stuff = "lol";
+        $lol = "wut";
     }
 
     public static function saveAction($a, $e, $t_id){
@@ -76,6 +75,60 @@ class Helper{
            return FALSE;
        }
        //Save the event here to prevent saving empty events if this doesn't trip.
+    }
+
+    public static function saveError ($severity, $id, $status){
+        $error = new Error;
+        $error->severity = $severity;
+        $error->request = $id;
+        $error->status = $status;
+        $error->time = date("Y-m-d H:i:s");
+        $error->save();
+    }
+
+    public static function saveEvents ($events_array, $id){
+        foreach ($events_array as $t_event){
+            $event = Event::find($t_event["id"]);
+            if ($event === NULL){
+                $event = new Event;
+            }
+            $event->event_id = $t_event["id"];
+            $event->ticket_id = $t_event["ticket_id"];
+            $event->created_at = $t_event["created_at"];
+            $event->channel = $t_event["via"]["channel"];
+            if (isset($t_event["metadata"]["system"]["ip_address"])){
+                $event->source_ip = $t_event["metadata"]["system"]["ip_address"];
+            }
+            //$ticketId needs to go in the events table here as well.
+            foreach ($t_event["events"] as $t_action){
+                $actionSaved = Helper::saveAction($t_action, $t_event, $id);
+                if ($actionSaved){
+                    $event->save();
+                }
+            }
+        }
+    }
+
+    public static function saveTicket($ticket_array){
+        $ticket = Ticket::find($ticket_array["id"]);
+        if ($ticket === NULL){
+            $ticket = new Ticket;
+            $ticket->ticket_id = $ticket_array["id"];
+            $ticket->channel = $ticket_array["via"]["channel"];
+            if ($ticket->channel == "email"){
+                $ticket->recieved_from = $ticket_array["via"]["source"]["from"]["address"];
+            }
+            $ticket->created_at = $ticket_array["created_at"];
+            $ticket->subject = $ticket_array["subject"];
+            $ticket->submitter_id = $ticket_array["submitter_id"];
+            $ticket->requester_id = $ticket_array["requester_id"];
+            $ticket->group_id = $ticket_array["group_id"];
+            $ticket->assignee_id = $ticket_array["assignee_id"];
+        }
+        $ticket->status = $ticket_array["status"];
+        $ticket->updated_at = $ticket_array["updated_at"];
+        $ticket->type = $ticket_array["type"];
+        $ticket->save();
     }
 
     public static function saveUser($user_array){
