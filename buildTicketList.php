@@ -25,8 +25,16 @@ $ticketCount = FALSE;
 $search = "type:ticket created>2016-01-01 fieldvalue:accnt*";
 //$search = "type:ticket cbyerly@gmail.com";
 $endpoint = "/search.json?query=" . urlencode($search);
+$data = $prod->get($endpoint)->response;
+//var_dump($data);
+echo $endpoint, PHP_EOL;
+$pages = ceil($data["count"] / 100);
+echo $pages, PHP_EOL;
+$pageArray[] = $endpoint;
+var_dump($pageArray);
 
 
+/*
 while(!$lastPage){
     $data = $prod->get($endpoint)->response;
     if (!$ticketCount){
@@ -51,3 +59,4 @@ while(!$lastPage){
 }
 $endTime = round((microtime(true) - $startTime), 2);
 echo "Processed $ticketCount tickets in $endTime seconds.", PHP_EOL;
+*/
