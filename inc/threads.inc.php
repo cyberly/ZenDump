@@ -20,11 +20,10 @@ class ApiRequest extends \Threaded {
     }
 
     public function run() {
-        require 'vendor/autoload.php';
-        include("inc/curl.inc.php");
-        include("inc/database.inc.php");
-        include("inc/models.inc.php");
-        include("inc/helper.inc.php");
+        require_once 'vendor/autoload.php';
+        include_once("inc/database.inc.php");
+        include_once("inc/models.inc.php");
+        include_once("inc/helper.inc.php");
         $prod = new zdCurl("production");
         $sleepDefault = 3000000;
         if ($this->ticketList){
@@ -47,17 +46,14 @@ class ApiRequest extends \Threaded {
                             break;
                         }
                     } else {
-                        //Let's build the ticket data.
                         $ticketData = $data["tickets"][0];
                         Helper::saveTicket($ticketData);
                         Helper::saveUser($data["users"]);
-                        //Build event data to iterate through actions.
                         $events = $data["audits"];
-                        Helper::saveEvents($events, $ticketData["id"]);
+                        Helper::saveComments($events, $ticketData["id"]);
                         $reqTime = (microtime(true) - $reqStart) * 1000000;
                         if ($reqTime < $sleepDefault){
                             $sleepTime = $sleepDefault - $reqTime;
-                            //echo "Sleep: $sleepTime, Req: $reqTime", PHP_EOL;
                             usleep($sleepTime);
                         }
                         if (!$data["next_page"]){
@@ -68,29 +64,77 @@ class ApiRequest extends \Threaded {
                     }
 
                 }
-
-                //echo "Thread ID: " . $this->threadId . ", Ticket: $ticket", PHP_EOL;
-                //$string = "Thread ID: " . $this->threadId . ", Ticket: $ticket";
-                //file_put_contents($fileName, $string, FILE_APPEND);
-                //echo $string, PHP_EOL;
-                //Helper::saveError("soft", $this->threadId, $ticket);
             }
-            //$sleepTime = mt_rand(1,10);
-            //echo "Thread {$this->threadId} completed, sleeping for $sleepTime seconds.", PHP_EOL;
-            //sleep($sleepTime);
             echo "Thread {$this->threadId} processed $tCount tickets, exiting.", PHP_EOL;
         }
     }
 }
 
-class TicketWork extends \Threaded{
+class ListWork extends \Threaded{
+    public $threadId;
+    public $endpoint;
 
-    public function __construct() {
-
+    public function __construct($endpoint, $threadId) {
+        $this->endpoint = $endpoint;
+        $this->threadId = $threadId;
+        $this->lastPage = FALSE;
     }
 
     public function run() {
-        
+        require 'vendor/autoload.php';
+        include("inc/database.inc.php");
+        include("inc/models.inc.php");
+        include("inc/helper.inc.php");
+        $prod = new zdCurl("production");
+        $errorCount = 0;
+        while(!$this->lastPage){
+            $data = $prod->get($this->endpoint)->response;
+            if ($prod->status != "200"){
+                if ($errorCount <= 4) {
+                    Helper::saveError("soft", $this->endpoint, "lol");
+                    usleep(500000);
+                    $errorCount++;
+                } else {
+                    Helper::saveError("hard", $$this->endpoint, $prod->status);
+                    break;
+                }
+            } else {
+                if (!$this->ticketCount){
+                    $this->ticketCount = $data["count"];
+                }
+                foreach($data["results"] as $t){
+                    $ticket = TicketList::find($t["id"]);
+                    if ($ticket === NULL){
+                        $ticket = new TicketList;
+                        $ticket->id = $t["id"];
+                        $ticket->save();
+                    }
+                }
+                if (!$data["next_page"]){
+                    $this->lastPage = TRUE;
+                } else {
+                    $this->endpoint = $data["next_page"];
+                }
+            }
+        }
+        echo $this->threadId . " completed, processed " . $this->ticketCount . " tickets.", PHP_EOL;
     }
 
+}
+
+class QueryList extends \Thread {
+    public $ticketList;
+
+    public function __construct($threadId) {
+        $this->threadId = $threadId;
+    }
+
+    public function run() {
+        require 'vendor/autoload.php';
+        include("inc/database.inc.php");
+        include("inc/models.inc.php");
+        include("inc/helper.inc.php");
+
+        $this->ticketList = TicketList::select("id")->get()->toArray();
+    }
 }

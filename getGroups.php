@@ -35,7 +35,7 @@ while(!$lastPage){
         $group = Group::find($g["id"]);
         if ($group === NULL){
             $group = new Group;
-            $group->id = $g["id"];
+            $group->group_id = $g["id"];
         }
         $group->name = $g["name"];
         $group->created_at = $g["created_at"];
@@ -50,24 +50,24 @@ while(!$lastPage){
     }
 }
 $prod = new zdCurl("production");
-$groupIds = Group::select("id")->get();
+$groupIds = Group::select("group_id")->get();
 foreach($groupIds as $id){
     $lastPage = FALSE;
-    $groupId = $id->id;
+    $groupId = $id->group_id;
     $endpoint = "/groups/$groupId/memberships.json";
     while(!$lastPage){
-        //echo $groupId;
         $data = $prod->get($endpoint)->response;
         foreach($data["group_memberships"] as $m){
             $membership = Membership::find($m["id"]);
             if ($membership === NULL){
                 $membership = new Membership;
-                $membership->id = $m["id"];
+                $membership->membership_id = $m["id"];
             }
             $membership->group_id = $m["group_id"];
             $membership->default = $m["default"];
             $membership->created_at = $m["created_at"];
             $membership->updated_at = $m["updated_at"];
+            $membership->user_id = $m["user_id"];
             $membership->save();
         }
         if (!$data["next_page"]){
@@ -76,7 +76,4 @@ foreach($groupIds as $id){
             $endpoint = $data["next_page"];
         }
     }
-    //var_dump($data);
 }
-//$endTime = round((microtime(true) - $startTime), 2);
-//echo "Processed $agentCount agents in $endTime seconds.", PHP_EOL;

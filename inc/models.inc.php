@@ -1,27 +1,21 @@
 <?php
 namespace ZenDump;
 
-class Action extends \Illuminate\Database\Eloquent\Model {
-    public $timestamps = false;
-    public $table = 'event_actions';
-    public $primaryKey = 'action_id';
-}
-
 class Attachment extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
     public $table = 'attachments';
     public $primaryKey = 'attachment_id';
 }
 
+class Comment extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'comments';
+    public $primaryKey = 'comment_id';
+}
+
 class Error extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
     public $table = 'errors';
-}
-
-class Event extends \Illuminate\Database\Eloquent\Model {
-    public $timestamps = false;
-    public $table = 'ticket_events';
-    public $primaryKey = 'event_id';
 }
 
 class Group extends \Illuminate\Database\Eloquent\Model {

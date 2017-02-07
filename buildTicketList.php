@@ -12,51 +12,42 @@
 *	¯\_(ツ)_/¯
 */
 namespace ZenDump;
-require 'vendor/autoload.php';
 include("inc/curl.inc.php");
-include("inc/database.inc.php");
-include("inc/models.inc.php");
+include("inc/threads.inc.php");
 
 set_time_limit(0);
 $startTime = microtime(true);
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $ticketCount = FALSE;
-$search = "type:ticket created>2016-01-01 fieldvalue:accnt*";
-//$search = "type:ticket cbyerly@gmail.com";
-$endpoint = "/search.json?query=" . urlencode($search);
-$data = $prod->get($endpoint)->response;
-//var_dump($data);
-echo $endpoint, PHP_EOL;
-$pages = ceil($data["count"] / 100);
-echo $pages, PHP_EOL;
-$pageArray[] = $endpoint;
-var_dump($pageArray);
-
-
-/*
-while(!$lastPage){
-    $data = $prod->get($endpoint)->response;
-    if (!$ticketCount){
-        $ticketCount = $data["count"];
-    }
-    foreach($data["results"] as $t){
-        $ticket = TicketList::find($t["id"]);
-        if ($ticket === NULL){
-            $ticket = new TicketList;
-            $ticket->id = $t["id"];
-            $ticket->save();
-        }
-
-
-    }
-    usleep(100000);
-    if (!$data["next_page"]){
-        $lastPage = TRUE;
-    } else {
-        $endpoint = $data["next_page"];
-    }
+$threadId = 1;
+$dateArray = array(
+    "2015-12-31" => "2016-02-01",
+    "2016-01-31" => "2016-03-01",
+    "2016-02-27" => "2016-04-01",
+    "2016-03-31" => "2016-05-01",
+    "2016-04-30" => "2016-06-01",
+    "2016-05-31" => "2016-07-01",
+    "2016-06-30" => "2016-08-01",
+    "2016-07-31" => "2016-09-01",
+    "2016-08-31" => "2016-10-01",
+    "2016-09-30" => "2016-11-01",
+    "2016-10-31" => "2016-12-01",
+    "2016-11-30" => "2017-01-01",
+    "2016-12-31" => "2017-02-01",
+    "2017-01-31" => "2017-03-01"
+);
+foreach ($dateArray as $k => $v){
+    $search = "type:ticket created>$k created<$v fieldvalue:accnt*";
+    $endpoints[] = "/search.json?query=" . urlencode($search);
 }
+$threads = count($dateArray);
+$pool = new \Pool($threads, APIWorker::class);
+foreach ($endpoints as $endpoint){
+    $pool->submit(new ListWork($endpoint, $threadId));
+    $threadId++;
+}
+$pool->shutdown();
+
 $endTime = round((microtime(true) - $startTime), 2);
-echo "Processed $ticketCount tickets in $endTime seconds.", PHP_EOL;
-*/
+echo "Total run time: $endTime seconds.", PHP_EOL;

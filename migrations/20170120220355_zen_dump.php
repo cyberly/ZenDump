@@ -12,13 +12,25 @@ class ZenDump extends Migration
             $table->bigInteger('attachment_id');
             $table->bigInteger('ticket_id')->nullable();
             $table->bigInteger('event_id')->nullable();
-            $table->bigInteger('action_id')->nullable();
+            $table->bigInteger('comment_id')->nullable();
             $table->longText('file_name')->nullable();
             $table->longText('url')->nullable();
             $table->longText('content_url')->nullable();
             $table->string('content_type')->nullable();
             $table->primary('attachment_id');
             //May need to add a column for groups, but will need a separate API call.
+            //$table->timestamps();
+        });
+
+        $this->schema->create('comments', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigInteger('comment_id');
+            $table->bigInteger('ticket_id')->nullable();
+            $table->longText('body')->nullable();
+            $table->boolean('public')->nullable();
+            $table->bigInteger('author_id')->nullable();
+            $table->boolean('has_attachments')->nullable();
+            $table->primary('comment_id');
             //$table->timestamps();
         });
 
@@ -30,24 +42,6 @@ class ZenDump extends Migration
             $table->string('status')->nullable();
             $table->dateTime('time')->nullable();
             //$table->primary('id');
-            //$table->timestamps();
-        });
-
-        $this->schema->create('event_actions', function(Illuminate\Database\Schema\Blueprint $table){
-            $table->engine = 'InnoDB';
-            $table->bigInteger('action_id');
-            $table->bigInteger('event_id')->nullable();
-            $table->string('type')->nullable();
-            $table->string('field_name')->nullable();
-            $table->longText('value')->nullable();
-            $table->longText('previous_value')->nullable();
-            $table->longText('body')->nullable();
-            $table->boolean('public')->nullable();
-            $table->bigInteger('author_id')->nullable();
-            $table->string('channel')->nullable();
-            $table->string('channel_id')->nullable();
-            $table->text('channel_name')->nullable();
-            $table->primary('action_id')->nullable();
             //$table->timestamps();
         });
 
@@ -92,22 +86,18 @@ class ZenDump extends Migration
             $table->bigInteger('group_id')->nullable();
             $table->dateTime('created_at')->nullable();
             $table->dateTime('updated_at')->nullable();
+            $table->string('tags')->nullable();
             $table->string('type')->nullable();
             $table->longText('subject')->nullable();
-            $table->string("status")->nullable();
+            $table->string('priority')->nullable();
+            $table->string('status')->nullable();
+            $table->string('account')->nullable();
+            $table->longText('description')->nullable();
+            $table->string('satisfaction_score')->nullable();
+            $table->longText('satisfaction_comment')->nullable();
+            $table->boolean('is_public')->nullable();
             $table->primary('ticket_id');
             //$table->foreign('user_id')->references('id')->on('users');
-            //$table->timestamps();
-        });
-
-        $this->schema->create('ticket_events', function(Illuminate\Database\Schema\Blueprint $table){
-            $table->engine = 'InnoDB';
-            $table->bigInteger('event_id');
-            $table->bigInteger('ticket_id')->nullable();
-            $table->dateTime('created_at')->nullable();
-            $table->string('channel')->nullable();
-            $table->string('source_ip')->nullable();
-            $table->primary('event_id');
             //$table->timestamps();
         });
 

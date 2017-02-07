@@ -7,74 +7,43 @@ class Helper{
         $lol = "wut";
     }
 
-    public static function saveAction($a, $e, $t_id){
-        $action = Action::find($a["id"]);
-        if ($action === NULL){
-            $action = new Action;
+    public static function saveComments ($events_array, $t_id){
+        foreach ($events_array as $t_event){
+            foreach ($t_event["events"] as $a){
+                if ($a["type"] == "Comment"){
+                    $comment = Comment::find($a["id"]);
+                    if ($comment === NULL){
+                        $comment = new Comment;
+                        $comment->comment_id = $a["id"];
+                        $comment->ticket_id = $t_id;
+                        $comment->body = $a["body"];
+                        $comment->public = $a["public"];
+                        $comment->author_id = $a["author_id"];
+                        if(!empty($a["attachments"])){
+                            foreach($a["attachments"] as $att){
+                                $attachment = Attachment::find($att["id"]);
+                                if ($attachment === NULL){
+                                    $attachment = new Attachment;
+                                    $attachment->attachment_id = $att["id"];
+                                    $attachment->ticket_id = $t_id;
+                                    //$attachment->event_id = $t_event["id"];
+                                    $attachment->comment_id = $a["id"];
+                                    $attachment->file_name = $att["file_name"];
+                                    $attachment->url = $att["url"];
+                                    $attachment->content_url = $att["content_url"];
+                                    $attachment->content_type = $att["content_type"];
+                                    $attachmentSaved = $attachment->save();
+                                    if ($attachmentSaved){
+                                        $comment->has_attachments = TRUE;
+                                    }
+                                }
+                            }
+                        }
+                        $comment->save();
+                    }
+                }
+            }
         }
-       $action->action_id = $a["id"];
-       $action->event_id = $e["id"];
-       $action->type = $a["type"];
-       if ($a["type"] == "Comment"){
-           $action->body = $a["body"];
-           $actionPublic = $a["public"];
-           $action->author_id = $a["author_id"];
-           if(!empty($a["attachments"])){
-               foreach($a["attachments"] as $att){
-                   $attachment = Attachment::find($att["id"]);
-                   if ($attachment === NULL){
-                       $attachment = new Attachment;
-                       $attachment->attachment_id = $att["id"];
-                       $attachment->ticket_id = $t_id;
-                       $attachment->event_id = $e["id"];
-                       $attachment->action_id = $action->id;
-                       $attachment->file_name = $att["file_name"];
-                       $attachment->url = $att["url"];
-                       $attachment->content_url = $att["content_url"];
-                       $attachment->content_type = $att["content_type"];
-                       $attachment->save();
-                   }
-               }
-           }
-           $action->save();
-           return TRUE;
-       }
-       if ($a["type"] == "Create" || $a["type"] == "Change"){
-           $action->field_name = $a["field_name"];
-           if (is_array($a["value"])) {
-               $action->value = join(',', $a["value"]);
-           } else {
-               $action->value = $a["value"];
-           }
-           if ($a["type"] == "Change"){
-               if (is_array($a["previous_value"])){
-                   $action->previous_value = join(',',$a["previous_value"]);
-               } else {
-                   $action->previous_value = $a["previous_value"];
-               }
-           }
-           if (isset($a["via"])){
-               if ($a["via"]["channel"] == "rule"){
-                   if(isset($a["via"]["source"]["rel"])){
-                       $action->channel = $a["via"]["source"]["rel"];
-                   }
-                   $action->channel_id = $a["via"]["source"]["from"]["id"];
-                   $action->channel_name = $a["via"]["source"]["from"]["title"];
-               }
-           }
-           if ($e["via"]["channel"] == "rule"){
-               if(isset($e["via"]["source"]["rel"])){
-                   $action->channel = $e["via"]["source"]["rel"];
-               }
-               $action->channel_id = $e["via"]["source"]["from"]["id"];
-               $action->channel_name = $e["via"]["source"]["from"]["title"];
-           }
-           $action->save();
-           return TRUE;
-       } else {
-           return FALSE;
-       }
-       //Save the event here to prevent saving empty events if this doesn't trip.
     }
 
     public static function saveError ($severity, $id, $status){
@@ -84,29 +53,6 @@ class Helper{
         $error->status = $status;
         $error->time = date("Y-m-d H:i:s");
         $error->save();
-    }
-
-    public static function saveEvents ($events_array, $id){
-        foreach ($events_array as $t_event){
-            $event = Event::find($t_event["id"]);
-            if ($event === NULL){
-                $event = new Event;
-            }
-            $event->event_id = $t_event["id"];
-            $event->ticket_id = $t_event["ticket_id"];
-            $event->created_at = $t_event["created_at"];
-            $event->channel = $t_event["via"]["channel"];
-            if (isset($t_event["metadata"]["system"]["ip_address"])){
-                $event->source_ip = $t_event["metadata"]["system"]["ip_address"];
-            }
-            //$ticketId needs to go in the events table here as well.
-            foreach ($t_event["events"] as $t_action){
-                $actionSaved = Helper::saveAction($t_action, $t_event, $id);
-                if ($actionSaved){
-                    $event->save();
-                }
-            }
-        }
     }
 
     public static function saveTicket($ticket_array){
@@ -119,15 +65,32 @@ class Helper{
                 $ticket->recieved_from = $ticket_array["via"]["source"]["from"]["address"];
             }
             $ticket->created_at = $ticket_array["created_at"];
-            $ticket->subject = $ticket_array["subject"];
-            $ticket->submitter_id = $ticket_array["submitter_id"];
-            $ticket->requester_id = $ticket_array["requester_id"];
-            $ticket->group_id = $ticket_array["group_id"];
-            $ticket->assignee_id = $ticket_array["assignee_id"];
         }
         $ticket->status = $ticket_array["status"];
         $ticket->updated_at = $ticket_array["updated_at"];
         $ticket->type = $ticket_array["type"];
+        $ticket->subject = $ticket_array["subject"];
+        $ticket->submitter_id = $ticket_array["submitter_id"];
+        $ticket->requester_id = $ticket_array["requester_id"];
+        $ticket->group_id = $ticket_array["group_id"];
+        $ticket->assignee_id = $ticket_array["assignee_id"];
+        foreach ($ticket_array["custom_fields"] as $field){
+            if ($field["id"] == "23268158"){
+                $ticket->account = $field["value"];
+            }
+        }
+        if (is_array($ticket_array["tags"])) {
+            $ticket->tags = join(',', $ticket_array["tags"]);
+        }
+        $ticket->description = $ticket_array["description"];
+        $ticket->priority = $ticket_array["priority"];
+        if (isset($ticket_array["satisfaction_rating"]["score"])){
+            $ticket->satisfaction_score = $ticket_array["satisfaction_rating"]["score"];
+        }
+        if (isset($ticket_array["satisfaction_rating"]["comment"])){
+            $ticket->satisfaction_comment = $ticket_array["satisfaction_rating"]["comment"];
+        }
+        $ticket->is_public = $ticket_array["is_public"];
         $ticket->save();
     }
 
