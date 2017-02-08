@@ -19,6 +19,7 @@ class Helper{
                         $comment->body = $a["body"];
                         $comment->public = $a["public"];
                         $comment->author_id = $a["author_id"];
+                        $comment->created_at = $t_event["created_at"];
                         if(!empty($a["attachments"])){
                             foreach($a["attachments"] as $att){
                                 $attachment = Attachment::find($att["id"]);

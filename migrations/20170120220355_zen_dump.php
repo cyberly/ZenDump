@@ -30,6 +30,7 @@ class ZenDump extends Migration
             $table->boolean('public')->nullable();
             $table->bigInteger('author_id')->nullable();
             $table->boolean('has_attachments')->nullable();
+            $table->dateTime('created_at');
             $table->primary('comment_id');
             //$table->timestamps();
         });
