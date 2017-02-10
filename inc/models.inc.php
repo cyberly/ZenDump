@@ -7,6 +7,22 @@ class Attachment extends \Illuminate\Database\Eloquent\Model {
     public $primaryKey = 'attachment_id';
 }
 
+class Automation extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'automations';
+    public $primaryKey = 'automation_id';
+}
+
+class AutomationAction extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'automation_actions';
+}
+
+class AutomationCondition extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'automation_conditions';
+}
+
 class Comment extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
     public $table = 'comments';

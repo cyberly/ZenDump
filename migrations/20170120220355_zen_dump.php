@@ -22,6 +22,38 @@ class ZenDump extends Migration
             //$table->timestamps();
         });
 
+        $this->schema->create('automations', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigInteger('automation_id');
+            $table->string('title')->nullable();
+            $table->boolean('active')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
+            $table->bigInteger('position')->nullable();
+            $table->primary('automation_id');
+            //$table->timestamps();
+        });
+
+        $this->schema->create('automation_actions', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
+            $table->bigInteger('automation_id');
+            $table->string('field')->nullable();
+            $table->string('recipient')->nullable();
+            $table->string('subject')->nullable();
+            $table->longText('value')->nullable();
+        });
+
+        $this->schema->create('automation_conditions', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
+            $table->bigInteger('automation_id');
+            $table->string('type')->nullable();
+            $table->string('field')->nullable();
+            $table->string('operator')->nullable();
+            $table->string('value')->nullable();
+        });
+
         $this->schema->create('comments', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigInteger('comment_id');

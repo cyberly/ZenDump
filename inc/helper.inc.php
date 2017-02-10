@@ -7,6 +7,17 @@ class Helper{
         $lol = "wut";
     }
 
+    public static function dumpJson($array, $folder){
+        if (!file_exists("./dumps/$folder")){
+            mkdir("./dumps/$folder", 0755);
+        }
+        $s =   array(" ","::",":","(",")","/");
+        $r =  array("_","-"."","","","_");
+        $file = "./dumps/$folder/" . (str_replace($s, $r, strtolower($array["title"])));
+        $string = json_encode($array, JSON_PRETTY_PRINT);
+        file_put_contents($file, $string);
+    }
+
     public static function saveComments ($events_array, $t_id){
         foreach ($events_array as $t_event){
             foreach ($t_event["events"] as $a){
@@ -94,6 +105,89 @@ class Helper{
         $ticket->is_public = $ticket_array["is_public"];
         $ticket->save();
     }
+
+    public static function saveRule($a, $type){
+        if ($type == "trigger"){
+            $rule = Trigger::find($a["id"]);
+            if ($rule === NULL){
+                $rule = new Trigger;
+                $rule->trigger_id = $a["id"];
+            }
+        }
+        if ($type == "automation"){
+            $rule = Automation::find($a["id"]);
+            if ($rule === NULL){
+                $rule = new Automation;
+                $rule->automation_id = $a["id"];
+            }
+        }
+        $rule->title = $a["title"];
+        $rule->active = $a["active"];
+        $rule->updated_at = $a["updated_at"];
+        $rule->created_at = $a["created_at"];
+        $rule->position = $a["position"];
+        $rule->save();
+        foreach ($a["conditions"]["all"] as $c){
+            if ($type == "trigger"){
+                $condition = new TriggerCondition;
+                $condition->trigger_id = $a["id"];
+            }
+            if ($type == "automation"){
+                $condition = new AutomationCondition;
+                $condition->automation_id = $a["id"];
+            }
+            $condition->type = "all";
+            $condition->field = $c["field"];
+            $condition->operator = $c["operator"];
+            $condition->value = $c["value"];
+            $condition->save();
+        }
+        foreach ($a["conditions"]["any"] as $c){
+            if ($type == "trigger"){
+                $condition = new TriggerCondition;
+                $condition->trigger_id = $a["id"];
+            }
+            if ($type == "automation"){
+                $condition = new AutomationCondition;
+                $condition->automation_id = $a["id"];
+            }
+            $condition->type = "any";
+            $condition->field = $c["field"];
+            $condition->operator = $c["operator"];
+            $condition->value = $c["value"];
+            $condition->save();
+        }
+        foreach ($a["actions"] as $act){
+            //echo "Trigger ID: " . $t["id"] . " Field: " . $a["field"], PHP_EOL;
+            if ($type == "trigger"){
+                $action = new TriggerAction;
+                $action->trigger_id = $a["id"];
+            }
+            if ($type == "automation"){
+                $action = new AutomationAction;
+                $action->automation_id = $a["id"];
+            }
+            $action->field = $act["field"];
+            if (is_array($act["value"])) {
+                if ($act["field"] == "notification_target"){
+                    if (is_array($act["value"][1])){
+                        $action->value = implode(',', $act["value"][1][0]);
+                    } else {
+                        $action->value = $act["value"][1];
+                        $action->recipient = $act["value"][0];
+                    }
+                } else {
+                    $action->value = $act["value"][2];
+                    $action->recipient = $act["value"][0];
+                    $action->subject = $act["value"][1];
+                }
+            } else {
+                $action->value = $act["value"];
+            }
+            $action->save();
+        }
+    }
+
 
     public static function saveUser($user_array){
         foreach ($user_array as $u) {
