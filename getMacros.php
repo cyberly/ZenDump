@@ -1,6 +1,6 @@
 <?php
 /**
-*   Steal some triggers and throw them in a DB I guess. Autos too.
+*   Steal some macros, fuck it.
 *
 *	This is probably going to be an utter shitshow.
 *
@@ -21,19 +21,11 @@ set_time_limit(0);
 $startTime = microtime(true);
 
 $prod = new ZdCurl("production");
-$endpoint = "/triggers/active.json";
+$endpoint = "/macros/active.json";
 
 $data = $prod->get($endpoint)->response;
-$triggers = $data["triggers"];
-foreach ($triggers as $t){
-    Helper::saveRule($t, "trigger");
-    Helper::dumpJson($t, "triggers");
+foreach ($data["macros"] as $macro){
+    Helper::saveMacro($macro);
+    Helper::dumpJson($macro, "macros");
 }
-
-$endpoint = "/automations/active.json";
-$data = $prod->get($endpoint)->response;
-$automations = $data["automations"];
-foreach ($automations as $a){
-    Helper::saveRule($a, "automation");
-    Helper::dumpJson($a, "automations");
-}
+//var_dump($data["macros"][0]);

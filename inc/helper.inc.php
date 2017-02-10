@@ -67,6 +67,40 @@ class Helper{
         $error->save();
     }
 
+    public static function saveMacro ($m){
+        $macro = Macro::find($m["id"]);
+        if ($macro === NULL){
+            $macro = new Macro;
+            $macro->macro_id = $m["id"];
+        }
+        $macro->title = $m["title"];
+        $macro->active = $m["active"];
+        $macro->position = $m["position"];
+        $macro->description = $m["description"];
+        $macro->created_at = $m["created_at"];
+        $macro->updated_at = $m["updated_at"];
+        $macro->save();
+        foreach ($m["actions"] as $a){
+            $action = new MacroAction;
+            $action->macro_id = $m["id"];
+            $action->field = $a["field"];
+            if ($action->field == "comment_value" && is_array($a["value"])){
+                $action->value = $a["value"][1];
+                $action->channel = $a["value"][0];
+            } else {
+                $action->value = $a["value"];
+            }
+            $action->save();
+        }
+        if (is_array($m["restriction"])){
+            $restriction = new MacroRestriction;
+            $restriction->macro_id = $m["id"];
+            $restriction->type = $m["restriction"]["type"];
+            $restriction->allowed_id = $m["restriction"]["id"];
+            $restriction->save();
+        }
+    }
+
     public static function saveTicket($ticket_array){
         $ticket = Ticket::find($ticket_array["id"]);
         if ($ticket === NULL){

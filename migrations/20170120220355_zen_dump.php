@@ -100,6 +100,38 @@ class ZenDump extends Migration
             //$table->timestamps();
         });
 
+        $this->schema->create('macros', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigInteger('macro_id');
+            $table->string('title')->nullable();
+            $table->boolean('active')->nullable();
+            $table->bigInteger('position')->nullable();
+            $table->longText('description')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
+            $table->primary('macro_id');
+            //$table->timestamps();
+        });
+
+        $this->schema->create('macro_actions', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
+            $table->bigInteger('macro_id');
+            $table->string('field')->nullable();
+            $table->longText('value')->nullable();
+            $table->string('channel')->nullable();
+            //$table->timestamps();
+        });
+
+        $this->schema->create('macro_restrictions', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
+            $table->bigInteger('macro_id');
+            $table->string('type')->nullable();
+            $table->bigInteger('allowed_id')->nullable();
+            //$table->timestamps();
+        });
+
         $this->schema->create('meta', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->integer('job_id')->nullable();

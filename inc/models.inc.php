@@ -40,6 +40,22 @@ class Group extends \Illuminate\Database\Eloquent\Model {
     public $primaryKey = 'group_id';
 }
 
+class Macro extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'macros';
+    public $primaryKey = 'macro_id';
+}
+
+class MacroAction extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'macro_actions';
+}
+
+class MacroRestriction extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'macro_restrictions';
+}
+
 class Membership extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
     public $table = 'group_memberships';
