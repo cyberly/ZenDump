@@ -46,6 +46,22 @@ class TicketList extends \Illuminate\Database\Eloquent\Model {
     public $table = 'ticket_list';
 }
 
+class Trigger extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'triggers';
+    public $primaryKey = 'trigger_id';
+}
+
+class TriggerAction extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'trigger_actions';
+}
+
+class TriggerCondition extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'trigger_conditions';
+}
+
 class User extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
     public $table = 'users';

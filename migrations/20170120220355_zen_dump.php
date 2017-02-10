@@ -109,6 +109,40 @@ class ZenDump extends Migration
             //$table->timestamps();
         });
 
+        $this->schema->create('triggers', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigInteger('trigger_id');
+            $table->string('title')->nullable();
+            $table->boolean('active')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
+            $table->bigInteger('position')->nullable();
+            $table->primary('trigger_id');
+            //$table->timestamps();
+        });
+
+        $this->schema->create('trigger_actions', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
+            $table->bigInteger('trigger_id');
+            $table->string('field')->nullable();
+            $table->string('recipient')->nullable();
+            $table->string('subject')->nullable();
+            $table->longText('value')->nullable();
+        });
+
+        $this->schema->create('trigger_conditions', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
+            $table->bigInteger('trigger_id');
+            $table->string('type')->nullable();
+            $table->string('field')->nullable();
+            $table->string('operator')->nullable();
+            $table->string('value')->nullable();
+        });
+
+
+
         $this->schema->create('users', function(Illuminate\Database\Schema\Blueprint $table){
                 $table->engine = 'InnoDB';
                 $table->bigInteger('user_id');
@@ -116,7 +150,7 @@ class ZenDump extends Migration
                 $table->string('alias')->nullable();
                 $table->string('email')->nullable();
                 $table->string('role')->nullable();
-                $table->text('signature')->nullable();
+                $table->longText('signature')->nullable();
                 $table->boolean('suspended')->nullable();
                 $table->primary('user_id');
         });
