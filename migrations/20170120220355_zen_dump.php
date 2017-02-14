@@ -140,6 +140,24 @@ class ZenDump extends Migration
             //$table->timestamps();
         });
 
+        $this->schema->create('targets', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigInteger('target_id');
+            $table->string('title')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->string('type')->nullable();
+            $table->boolean('active')->nullable();
+            $table->string('method')->nullable();
+            $table->string('attribute')->nullable();
+            $table->string('username')->nullable();
+            $table->string('password')->nullable();
+            $table->longText('target_url')->nullable();
+            $table->longText('url')->nullable();
+            $table->primary('target_id');
+            //$table->foreign('user_id')->references('id')->on('users');
+            //$table->timestamps();
+        });
+
         $this->schema->create('tickets', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigInteger('ticket_id');

@@ -67,6 +67,25 @@ class Meta extends \Illuminate\database\Eloquent\Model {
     public $table = 'meta';
 }
 
+class Target extends \Illuminate\Database\Eloquent\Model {
+    protected $fillable = array(
+        'target_id',
+        'title',
+        'created_at',
+        'type',
+        'active',
+        'method',
+        'attribute',
+        'username',
+        'password',
+        'target_url',
+        'url'
+    );
+    public $timestamps = false;
+    public $table = 'targets';
+    public $primaryKey = 'target_id';
+}
+
 class Ticket extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
     public $table = 'tickets';
