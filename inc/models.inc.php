@@ -1,6 +1,18 @@
 <?php
 namespace ZenDump;
 
+class Article extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'articles';
+    public $primaryKey = 'article_id';
+}
+
+class ArticleAttachment extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'article_attachments';
+    public $primaryKey = 'attachment_id';
+}
+
 class Attachment extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
     public $table = 'attachments';
@@ -23,6 +35,12 @@ class AutomationCondition extends \Illuminate\Database\Eloquent\Model {
     public $table = 'automation_conditions';
 }
 
+class Category extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'categories';
+    public $primaryKey = 'category_id';
+}
+
 class Comment extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
     public $table = 'comments';
@@ -38,6 +56,12 @@ class Group extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
     public $table = 'groups';
     public $primaryKey = 'group_id';
+}
+
+class Label extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'article_labels';
+    public $primaryKey = 'label_id';
 }
 
 class Macro extends \Illuminate\Database\Eloquent\Model {
@@ -65,6 +89,12 @@ class Membership extends \Illuminate\Database\Eloquent\Model {
 class Meta extends \Illuminate\database\Eloquent\Model {
     public $timestamps = false;
     public $table = 'meta';
+}
+
+class Section extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'sections';
+    public $primaryKey = 'section_id';
 }
 
 class Target extends \Illuminate\Database\Eloquent\Model {

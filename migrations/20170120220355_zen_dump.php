@@ -7,6 +7,62 @@ class ZenDump extends Migration
     public $timestamps = false;
     public function up()
     {
+        $this->schema->create('articles', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigInteger('article_id');
+            $table->string('title')->nullable();
+            $table->string('name')->nullable();
+            $table->longText('body')->nullable();
+            $table->string('locale')->nullable();
+            $table->string('source_locale')->nullable();
+            $table->bigInteger('author_id')->nullable();
+            $table->boolean('comments_disabled')->nullable();
+            $table->longText('outdated_locales')->nullable();
+            $table->boolean('outdated')->nullable();
+            $table->longText('label_names')->nullable();
+            $table->boolean('draft')->nullable();
+            $table->boolean('promoted')->nullable();
+            $table->bigInteger('position')->nullable();
+            $table->bigInteger('vote_sum')->nullable();
+            $table->bigInteger('vote_count')->nullable();
+            $table->bigInteger('section_id')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
+            $table->longText('html_url')->nullable();
+            $table->longText('url')->nullable();
+            $table->primary('article_id');
+            //$table->timestamps();
+        });
+
+        $this->schema->create('article_attachments', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
+            $table->bigInteger('attachment_id');
+            $table->bigInteger('article_id')->nullable();
+            $table->longText('file_name')->nullable();
+            $table->longText('display_file_name')->nullable();
+            $table->string('content_type')->nullable();
+            $table->longText('relative_path')->nullable();
+            $table->bigInteger('size')->nullable();
+            $table->boolean('inline')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
+            $table->longText('content_url')->nullable();
+            $table->longText('url')->nullable();
+            //$table->timestamps();
+        });
+
+        $this->schema->create('article_labels', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigInteger('label_id');
+            $table->string('name')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
+            $table->longText('url')->nullable();
+            $table->primary('label_id');
+            //$table->timestamps();
+        });
+
         $this->schema->create('attachments', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigInteger('attachment_id');
@@ -18,7 +74,6 @@ class ZenDump extends Migration
             $table->longText('content_url')->nullable();
             $table->string('content_type')->nullable();
             $table->primary('attachment_id');
-            //May need to add a column for groups, but will need a separate API call.
             //$table->timestamps();
         });
 
@@ -52,6 +107,24 @@ class ZenDump extends Migration
             $table->string('field')->nullable();
             $table->string('operator')->nullable();
             $table->string('value')->nullable();
+        });
+
+        $this->schema->create('categories', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigInteger('category_id');
+            $table->string('name')->nullable();
+            $table->longText('description')->nullable();
+            $table->string('locale')->nullable();
+            $table->string('source_locale')->nullable();
+            $table->longText('url')->nullable();
+            $table->longText('html_url')->nullable();
+            $table->boolean('outdated')->nullable();
+            $table->bigInteger('position')->nullable();
+            $table->longText('translation_ids')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
+            $table->primary('category_id');
+            //$table->timestamps();
         });
 
         $this->schema->create('comments', function(Illuminate\Database\Schema\Blueprint $table){
@@ -136,6 +209,26 @@ class ZenDump extends Migration
             $table->engine = 'InnoDB';
             $table->integer('job_id')->nullable();
             $table->primary('job_id');
+            //Not honestly sure what this is going ot be used for yet.
+            //$table->timestamps();
+        });
+
+        $this->schema->create('sections', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->integer('section_id');
+            $table->string('name')->nullable();
+            $table->longText('description')->nullable();
+            $table->string('locale')->nullable();
+            $table->string('source_locale')->nullable();
+            $table->longText('url')->nullable();
+            $table->longText('html_url')->nullable();
+            $table->bigInteger('category_id')->nullable();
+            $table->boolean('outdated')->nullable();
+            $table->bigInteger('position')->nullable();
+            $table->longText('translation_ids')->nullable();
+            $table->dateTime('created_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
+            $table->primary('section_id');
             //Not honestly sure what this is going ot be used for yet.
             //$table->timestamps();
         });
