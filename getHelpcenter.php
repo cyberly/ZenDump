@@ -21,7 +21,6 @@ set_time_limit(0);
 $startTime = microtime(true);
 $prod = new zdCurl("production");
 $lastPage = FALSE;
-$agentCount = FALSE;
 $endpoint = "/help_center/articles.json?per_page=50";
 
 
@@ -46,10 +45,7 @@ while(!$lastPage){
                 $article->$k = $v;
             }
         }
-        //echo $article->name, PHP_EOL;
         $attachmentData = $prod->get("/help_center/articles/" . $article->article_id . "/attachments.json")->response;
-        //echo $article->article_id, PHP_EOL;
-        //var_dump($attachmentData);
         if (!empty($attachmentData["article_attachments"])){
             foreach ($attachmentData["article_attachments"] as $att){
                 $attachment = new ArticleAttachment;
@@ -65,6 +61,48 @@ while(!$lastPage){
         }
         $article->save();
     }
-    $lastPage = TRUE;
+    if (!$data["next_page"]){
+        $lastPage = TRUE;
+    } else {
+        $endpoint = $data["next_page"];
+    }
 }
-//echo $prod->status, PHP_EOL;
+
+$lastPage = FALSE;
+$endpoint = "/help_center/categories.json?per_page=50";
+$data = $prod->get($endpoint)->response;
+$categories = $data["categories"];
+foreach ($categories as $c){
+    $category = new Category;
+    $category->category_id = $c["id"];
+    unset($c["id"]);
+    foreach ($c as $k => $v){
+        if (!empty($v)){
+            $category->$k = $v;
+        }
+    }
+    $category->save();
+}
+
+$endpoint = "/help_center/sections.json?per_page=50";
+while(!$lastPage){
+    $data = $prod->get($endpoint)->response;
+    $sections = $data["sections"];
+    foreach($sections as $s){
+        $section = new Section;
+        $section->section_id = $s["id"];
+        unset($s["id"]);
+        foreach ($s as $k => $v){
+            if (!empty($v)){
+                $section->$k = $v;
+            }
+        }
+        $section->save();
+    }
+
+    if (!$data["next_page"]){
+        $lastPage = TRUE;
+    } else {
+        $endpoint = $data["next_page"];
+    }
+}

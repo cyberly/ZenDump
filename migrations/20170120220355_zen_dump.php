@@ -215,7 +215,8 @@ class ZenDump extends Migration
 
         $this->schema->create('sections', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
-            $table->integer('section_id');
+            //$table->bigIncrements('id');
+            $table->bigInteger('section_id');
             $table->string('name')->nullable();
             $table->longText('description')->nullable();
             $table->string('locale')->nullable();
@@ -226,6 +227,7 @@ class ZenDump extends Migration
             $table->boolean('outdated')->nullable();
             $table->bigInteger('position')->nullable();
             $table->longText('translation_ids')->nullable();
+            $table->string('sorting')->nullable();
             $table->dateTime('created_at')->nullable();
             $table->dateTime('updated_at')->nullable();
             $table->primary('section_id');
