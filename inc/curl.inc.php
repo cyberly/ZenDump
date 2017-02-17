@@ -36,6 +36,14 @@ class ZdCurl {
           'Content-type: application/json'
         ));
         break;
+      case "GETFILE":
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-type: application/binary'
+        ));
+        break;
       case "POST":
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataEncoded);
@@ -59,8 +67,12 @@ class ZdCurl {
       ));
     break;
     }
-
-    $output = json_decode(curl_exec($ch), true);
+    //Should probably test for output, but this works for now.
+    if ($verb == "GETFILE"){
+        $output = curl_exec($ch);
+    } else {
+        $output = json_decode(curl_exec($ch), true);
+    }
     $this->status = curl_getinfo($ch,CURLINFO_HTTP_CODE);
     //$curlInfo = curl_getinfo($ch);
     curl_close($ch);
@@ -75,6 +87,12 @@ class ZdCurl {
 
   public function get($endpoint) {
      $resp = $this->doCurl($this->isEndpoint($endpoint), "GET", null);
+     $this->response = $resp;
+     return $this;
+  }
+
+  public function getFile($endpoint) {
+     $resp = $this->doCurl($this->isEndpoint($endpoint), "GETFILE", null);
      $this->response = $resp;
      return $this;
   }

@@ -43,6 +43,7 @@ class Helper{
                                     $attachment->file_name = $att["file_name"];
                                     $attachment->url = $att["url"];
                                     $attachment->content_url = $att["content_url"];
+                                    $attachment->size = $att["size"];
                                     $attachment->content_type = $att["content_type"];
                                     $attachmentSaved = $attachment->save();
                                     if ($attachmentSaved){

@@ -70,6 +70,7 @@ class ZenDump extends Migration
             $table->bigInteger('event_id')->nullable();
             $table->bigInteger('comment_id')->nullable();
             $table->longText('file_name')->nullable();
+            $table->bigInteger('size')->nullable();
             $table->longText('url')->nullable();
             $table->longText('content_url')->nullable();
             $table->string('content_type')->nullable();
