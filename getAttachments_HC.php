@@ -22,13 +22,22 @@ $startTime = microtime(true);
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $agentCount = FALSE;
-$search = "type:user role:agent role:admin";
-$fileUrl = "https://liquidweb.zendesk.com/hc/article_attachments/218333887/wpcaching5.png";
+$baseDir = "attachments";
+$attachments = ArticleAttachment::select('content_url', 'relative_path')->get()->toArray();
+//var_dump($attachments);
 
-$fileData = $prod->getFile($fileUrl)->response;
-//var_dump($fileData);
-//echo $prod->status, PHP_EOL;
-//var_dump($prod);
-$fp = fopen("dumps/wpcaching5.png", "x");
-fwrite($fp, $fileData);
-fclose($fp);
+foreach ($attachments as $a){
+    $fileUrl = $a["content_url"];
+    $relative = $a["relative_path"];
+    $dir = pathinfo($relative, PATHINFO_DIRNAME);
+    $file = pathinfo($relative, PATHINFO_BASENAME);
+    $fileData = $prod->getFile($fileUrl)->response;
+    $attPath = $baseDir . $dir;
+    $fullPath = $attPath . "/" . $file;
+    if (!file_exists($attPath)){
+        mkdir($attPath, 0755, true);
+    }
+    $fp = fopen($fullPath, "x");
+    fwrite($fp, $fileData);
+    fclose($fp);
+}
