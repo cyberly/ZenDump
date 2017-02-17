@@ -18,6 +18,22 @@ class Helper{
         file_put_contents($file, $string);
     }
 
+    public static function getAttachment($a, $baseDir){
+        $prod = new zdCurl("production");
+        $url = $a["content_url"];
+        $file = $a["file_name"];
+        $ticketId = $a["ticket_id"];
+        $dir = $baseDir . "/" . $ticketId;
+        $path = $baseDir . "/" . $ticketId . "/" . $file;
+        $fileData = $prod->getFile($url)->response;
+        if (!file_exists($dir)){
+            mkdir($dir, 0755, true);
+        }
+        $fp = fopen($path, "w");
+        fwrite($fp, $fileData);
+        fclose($fp);
+    }
+
     public static function saveComments ($events_array, $t_id){
         foreach ($events_array as $t_event){
             foreach ($t_event["events"] as $a){

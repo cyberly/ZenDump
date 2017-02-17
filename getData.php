@@ -17,7 +17,7 @@ if ($query->start()){
         $ticketList[] = $t["id"];
     }
 }
-$ticketList = array(1288184,1286761,1169149000,979845,805163,1207888,980757,1068198,943677);
+$ticketList = array(1288184,1286761,1169149000,979845,805163,1207888,980757,1068198,943677,1288184);
 $arrMax = count($ticketList);
 $chunkSize = ceil($arrMax / $threads);
 echo "Threads: $threads", PHP_EOL;

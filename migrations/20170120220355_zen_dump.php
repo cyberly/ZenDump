@@ -67,7 +67,6 @@ class ZenDump extends Migration
             $table->engine = 'InnoDB';
             $table->bigInteger('attachment_id');
             $table->bigInteger('ticket_id')->nullable();
-            $table->bigInteger('event_id')->nullable();
             $table->bigInteger('comment_id')->nullable();
             $table->longText('file_name')->nullable();
             $table->bigInteger('size')->nullable();

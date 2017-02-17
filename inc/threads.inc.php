@@ -138,3 +138,43 @@ class QueryList extends \Thread {
         $this->ticketList = TicketList::select("id")->get()->toArray();
     }
 }
+
+class QueryAttachments extends \Thread {
+    public $ticketList;
+
+    public function __construct($threadId) {
+        $this->threadId = $threadId;
+    }
+
+    public function run() {
+        require 'vendor/autoload.php';
+        include("inc/database.inc.php");
+        include("inc/models.inc.php");
+        include("inc/helper.inc.php");
+
+        $this->attachments = Attachment::select('ticket_id', 'file_name', 'content_url')
+                                ->get()
+                                ->toArray();
+    }
+}
+
+class AttachmentWork extends \Threaded{
+    public $threadId;
+
+    public function __construct($attachments, $threadId) {
+        $this->attachments = $attachments;
+        $this->threadId = $threadId;
+    }
+
+    public function run() {
+        require 'vendor/autoload.php';
+        include("inc/database.inc.php");
+        include("inc/models.inc.php");
+        include("inc/helper.inc.php");
+        $prod = new zdCurl("production");
+        $baseDir = "attachments";
+        foreach($this->attachments as $a){
+            Helper::getAttachment($a, $baseDir);
+        }
+    }
+}

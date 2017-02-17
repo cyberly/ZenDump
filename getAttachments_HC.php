@@ -1,6 +1,6 @@
 <?php
 /**
-*   Pulling attachments with threads, both HC and ZD.
+*   ZD APIs are horrible, so this only does HC.
 *
 *	This is probably going to be an utter shitshow.
 *
@@ -20,8 +20,6 @@ include("inc/models.inc.php");
 set_time_limit(0);
 $startTime = microtime(true);
 $prod = new zdCurl("production");
-$lastPage = FALSE;
-$agentCount = FALSE;
 $baseDir = "attachments";
 $attachments = ArticleAttachment::select('content_url', 'relative_path')->get()->toArray();
 //var_dump($attachments);
