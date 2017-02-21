@@ -22,10 +22,20 @@ $startTime = microtime(true);
 
 $prod = new ZdCurl("production");
 $endpoint = "/macros/active.json";
+$lastPage = FALSE;
 
-$data = $prod->get($endpoint)->response;
-foreach ($data["macros"] as $macro){
-    Helper::saveMacro($macro);
-    Helper::dumpJson($macro, "macros");
+while (!$lastPage){
+    $data = $prod->get($endpoint)->response;
+    foreach ($data["macros"] as $macro){
+        Helper::saveMacro($macro);
+        //Helper::dumpJson($macro, "macros");
+    }
+
+    if (!$data["next_page"]){
+        $lastPage = TRUE;
+    } else {
+        $endpoint = $data["next_page"];
+    }
 }
+
 //var_dump($data["macros"][0]);
