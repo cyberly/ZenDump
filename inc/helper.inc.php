@@ -255,4 +255,12 @@ class Helper{
             }
         }
     }
+
+    public static function startJob($type){
+        $job = new Meta;
+        $epoch = new \DateTime();
+        $job->type = $type;
+        $job->start_time = $epoch->format('U');
+        $job->save();
+    }
 }

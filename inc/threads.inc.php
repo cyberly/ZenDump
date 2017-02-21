@@ -139,6 +139,24 @@ class QueryList extends \Thread {
     }
 }
 
+class CreateJob extends \Thread {
+    public $ticketList;
+
+    public function __construct($threadId, $type) {
+        $this->threadId = $threadId;
+        $this->type = $type;
+    }
+
+    public function run() {
+        require 'vendor/autoload.php';
+        include("inc/database.inc.php");
+        include("inc/models.inc.php");
+        include("inc/helper.inc.php");
+
+        Helper::startJob($this->type);
+    }
+}
+
 class QueryAttachments extends \Thread {
     public $ticketList;
 

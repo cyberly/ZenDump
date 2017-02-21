@@ -207,8 +207,9 @@ class ZenDump extends Migration
 
         $this->schema->create('meta', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
-            $table->integer('job_id')->nullable();
-            $table->primary('job_id');
+            $table->bigIncrements('id');
+            $table->string('type')->nullable();
+            $table->bigInteger('start_time')->nullable();
             //Not honestly sure what this is going ot be used for yet.
             //$table->timestamps();
         });
