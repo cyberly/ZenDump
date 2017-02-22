@@ -170,7 +170,7 @@ class QueryAttachments extends \Thread {
         include("inc/models.inc.php");
         include("inc/helper.inc.php");
 
-        $this->attachments = Attachment::select('ticket_id', 'file_name', 'content_url')
+        $this->attachments = Attachment::select('attachment_id', 'ticket_id', 'file_name', 'content_url')
                                 ->get()
                                 ->toArray();
     }

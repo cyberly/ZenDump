@@ -12,7 +12,7 @@ class ZdCurl {
     $this->user = $environments->$environment->username;
     $this->pass = $environments->$environment->password;
     $this->baseUrl = $environments->$environment->url;
-
+    $this->status = null;
 
     //echo $this->environment->username;
   }

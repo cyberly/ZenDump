@@ -20,18 +20,39 @@ class Helper{
 
     public static function getAttachment($a, $baseDir){
         $prod = new zdCurl("production");
+        $sleepDefault = 3000000;
+        $reqStart = microtime(true);
         $url = $a["content_url"];
         $file = $a["file_name"];
         $ticketId = $a["ticket_id"];
+        $attachmentId = $a["attachment_id"];
         $dir = $baseDir . "/" . $ticketId;
         $path = $baseDir . "/" . $ticketId . "/" . $file;
-        $fileData = $prod->getFile($url)->response;
+        $errorCount = 0;
+        while ($prod->status != "200"){
+            $fileData = $prod->getFile($url)->response;
+            if ($prod->status != 200){
+                Helper::saveError("att-soft", $attachmentId, $prod->status);
+                $errorCount++;
+                sleep(2);
+            }
+            if ($errorCount >= 4){
+                Helper::saveError("att-hard", $attachmentId, $prod->status);
+                break;
+            }
+        }
         if (!file_exists($dir)){
             mkdir($dir, 0755, true);
         }
         $fp = fopen($path, "w");
         fwrite($fp, $fileData);
         fclose($fp);
+        $reqTime = (microtime(true) - $reqStart) * 1000000;
+        if ($reqTime < $sleepDefault){
+            $sleepTime = $sleepDefault - $reqTime;
+            usleep($sleepTime);
+        }
+        //var_dump($prod);
     }
 
     public static function saveComments ($events_array, $t_id){

@@ -20,7 +20,7 @@ set_time_limit(0);
 $worker = new ApiWorker();
 $worker->start();
 $threadId = 1;
-$threads = 15;
+$threads = 25;
 $query = new QueryAttachments(1);
 if ($query->start()){
     $query->join();
