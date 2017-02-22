@@ -136,6 +136,7 @@ class QueryList extends \Thread {
         include("inc/helper.inc.php");
 
         $this->ticketList = TicketList::select("id")->get()->toArray();
+        //$this->ticketList = Error::select("id")->where('severity', '=', 'hard')->get()->toArray();
     }
 }
 
