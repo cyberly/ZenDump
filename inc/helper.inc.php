@@ -47,6 +47,7 @@ class Helper{
         $fp = fopen($path, "w");
         fwrite($fp, $fileData);
         fclose($fp);
+        Helper::saveError("att-saved", $attachmentId, $prod->status);
         $reqTime = (microtime(true) - $reqStart) * 1000000;
         if ($reqTime < $sleepDefault){
             $sleepTime = $sleepDefault - $reqTime;
