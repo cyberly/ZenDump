@@ -27,7 +27,7 @@ class Helper{
         $ticketId = $a["ticket_id"];
         $attachmentId = $a["attachment_id"];
         $dir = $baseDir . "/" . $ticketId;
-        $path = $baseDir . "/" . $ticketId . "/" . $file;
+        $path = $baseDir . "/" . $ticketId . "/" . $attachmentId . "-" . $file;
         $errorCount = 0;
         while ($prod->status != "200"){
             $fileData = $prod->getFile($url)->response;
