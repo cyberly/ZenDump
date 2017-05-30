@@ -4,6 +4,7 @@
 *   Build an incremantal ticket list. Exciting.
 *
 *	This is probably going to be an utter shitshow.
+* This is actually unused due to Gears being useless.
 *
 *	@author 	cbyerly <cbyerly@liquidweb.com>
 *	@license	MIT maybe idk
@@ -25,7 +26,10 @@ Helper::startJob("incremental");
 TicketList::truncate();
 $prod = new zdCurl("production");
 $lastPage = FALSE;
-$startQuery = Meta::select("start_time")->orderBy("start_time")->first()->toArray();
+$startQuery = Meta::select("start_time")
+  ->orderBy("start_time")
+  ->first()
+  ->toArray();
 $start_time = $startQuery["start_time"];
 //$date = date("Y-m-d H:i:s");
 //$date = "2017-02-21 14:28:00";

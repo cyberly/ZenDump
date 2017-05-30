@@ -36,16 +36,20 @@ $dateArray = array(
     "2016-10-31" => "2016-12-01",
     "2016-11-30" => "2017-01-01",
     "2016-12-31" => "2017-02-01",
-    "2017-01-31" => "2017-03-01"
+    "2017-01-31" => "2017-03-01",
+    "2017-02-28" => "2017-04-01",
+    "2017-03-31" => "2017-05-01",
+    "2017-04-30" => "2017-05-30",
 );
 foreach ($dateArray as $k => $v){
-    $search = "type:ticket created>$k created<$v fieldvalue:accnt*";
+    $search = "type:ticket created>$k created<$v fieldvalue:accnt*" .
+      " status:closed";
     $endpoints[] = "/search.json?query=" . urlencode($search);
 }
 $threads = count($dateArray);
 $pool = new \Pool($threads, APIWorker::class);
 foreach ($endpoints as $endpoint){
-    $pool->submit(new ListWork($endpoint, $threadId));
+    $pool->submit(new ListWork($endpoint, $threadId, "TicketsClosed"));
     $threadId++;
 }
 $pool->shutdown();

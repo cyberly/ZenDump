@@ -65,7 +65,8 @@ class ApiRequest extends \Threaded {
 
                 }
             }
-            echo "Thread {$this->threadId} processed $tCount tickets, exiting.", PHP_EOL;
+            echo "Thread {$this->threadId} processed $tCount tickets," .
+            " exiting.", PHP_EOL;
         }
     }
 }
@@ -73,10 +74,12 @@ class ApiRequest extends \Threaded {
 class ListWork extends \Threaded{
     public $threadId;
     public $endpoint;
+    public $listObj;
 
-    public function __construct($endpoint, $threadId) {
+    public function __construct($endpoint, $threadId, $listObj) {
         $this->endpoint = $endpoint;
         $this->threadId = $threadId;
+        $this->listObj = $listObj;
         $this->lastPage = FALSE;
     }
 
@@ -105,7 +108,7 @@ class ListWork extends \Threaded{
                 foreach($data["results"] as $t){
                     $ticket = TicketList::find($t["id"]);
                     if ($ticket === NULL){
-                        $ticket = new TicketList;
+                        $ticket = new $this->listObj;
                         $ticket->id = $t["id"];
                         $ticket->save();
                     }
@@ -117,7 +120,8 @@ class ListWork extends \Threaded{
                 }
             }
         }
-        echo $this->threadId . " completed, processed " . $this->ticketCount . " tickets.", PHP_EOL;
+        echo $this->threadId .
+          " completed, processed " . $this->ticketCount . " tickets.", PHP_EOL;
     }
 
 }

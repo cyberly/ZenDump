@@ -122,9 +122,14 @@ class Ticket extends \Illuminate\Database\Eloquent\Model {
     public $primaryKey = 'ticket_id';
 }
 
-class TicketList extends \Illuminate\Database\Eloquent\Model {
+class TicketsClosed extends \Illuminate\Database\Eloquent\Model {
     public $timestamps = false;
-    public $table = 'ticket_list';
+    public $table = 'tickets_closed';
+}
+
+class TicketsActive extends \Illuminate\Database\Eloquent\Model {
+    public $timestamps = false;
+    public $table = 'tickets_active';
 }
 
 class Trigger extends \Illuminate\Database\Eloquent\Model {

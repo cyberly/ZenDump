@@ -280,7 +280,14 @@ class ZenDump extends Migration
             //$table->timestamps();
         });
 
-        $this->schema->create('ticket_list', function(Illuminate\Database\Schema\Blueprint $table){
+        $this->schema->create('tickets_closed', function(Illuminate\Database\Schema\Blueprint $table){
+            $table->engine = 'InnoDB';
+            $table->bigInteger('id');
+            $table->primary('id');
+            //$table->timestamps();
+        });
+
+        $this->schema->create('tickets_active', function(Illuminate\Database\Schema\Blueprint $table){
             $table->engine = 'InnoDB';
             $table->bigInteger('id');
             $table->primary('id');
