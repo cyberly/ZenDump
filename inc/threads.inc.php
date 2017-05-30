@@ -94,11 +94,11 @@ class ListWork extends \Threaded{
             $data = $prod->get($this->endpoint)->response;
             if ($prod->status != "200"){
                 if ($errorCount <= 4) {
-                    Helper::saveError("soft", $this->endpoint, "lol");
+                    Helper::saveError("soft", $this->endpoint, $prod->status);
                     usleep(500000);
                     $errorCount++;
                 } else {
-                    Helper::saveError("hard", $$this->endpoint, $prod->status);
+                    Helper::saveError("hard", $$his->endpoint, $prod->status);
                     break;
                 }
             } else {
