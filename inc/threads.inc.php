@@ -106,9 +106,10 @@ class ListWork extends \Threaded{
                     $this->ticketCount = $data["count"];
                 }
                 foreach($data["results"] as $t){
-                    $ticket = $this->listObj::find($t["id"]);
+                    $listType = "ZenDump\\" . $this->listObj;
+                    $ticket = $listType::find($t["id"]);
                     if ($ticket === NULL){
-                        $ticket = new $this->listObj;
+                        $ticket = new $listType;
                         $ticket->id = $t["id"];
                         $ticket->save();
                     }
