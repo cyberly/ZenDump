@@ -67,7 +67,7 @@ foreach ($dateArray as $k => $v){
     $chunkSize = ceil($pageCount / $threads);
     echo "$endpoint", PHP_EOL;
     echo "Pages: $pageCount, Threads: $threads, Chunk Size: $chunkSize", PHP_EOL;
-    echo "Building ticket list...";, PHP_EOL;
+    echo "Building ticket list...", PHP_EOL;
     echo " ", PHP_EOL;
     $chunkArray = array_chunk($pages, $chunkSize);
     //echo $data["next_page"], PHP_EOL;
