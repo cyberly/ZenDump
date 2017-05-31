@@ -108,6 +108,8 @@ class ListWork extends \Threaded{
             } else {
                 if (!$this->ticketCount){
                     $this->ticketCount = $data["count"];
+                    echo "Thread " . $this->threadId . "processing " .
+                        $this->ticketCount . "tickets.";
                 }
                 foreach($data["results"] as $t){
                     $listType = "ZenDump\\" . $this->listObj;
