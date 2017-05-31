@@ -98,7 +98,7 @@ class ListWork extends \Threaded{
                     usleep(500000);
                     $errorCount++;
                 } else {
-                    Helper::saveError("hard", $$his->endpoint, $prod->status);
+                    Helper::saveError("hard", $this->endpoint, $prod->status);
                     break;
                 }
             } else {
