@@ -43,7 +43,7 @@ class ApiRequest extends \Threaded {
                             $errorCount++;
                         } else {
                             Helper::saveError("hard", $searchId, $prod->status);
-                            break;
+                            continue;
                         }
                     } else {
                         $ticketData = $data["tickets"][0];
@@ -194,8 +194,8 @@ class SearchRequest extends \Threaded {
     public $ticketId;
     public $ticketList;
 
-    public function __construct($ticketList, $threadId){
-        $this->ticketList = $ticketList;
+    public function __construct($pageList, $threadId){
+        $this->pageList = $pageList;
         $this->threadId = $threadId;
     }
 
@@ -206,44 +206,40 @@ class SearchRequest extends \Threaded {
         include_once("inc/helper.inc.php");
         $prod = new zdCurl("production");
         $sleepDefault = 3000000;
-        if ($this->ticketList){
-            $tCount = count($this->ticketList);
-            foreach ($this->ticketList as $t){
-                $searchId = $t;//->id;
-                $lastPage = FALSE;
+        if ($this->pageList){
+            $pCount = count($this->pageList);
+            foreach ($this->pageList as $p){
                 $reqStart = microtime(true);
-                $endpoint = "/tickets/$searchId/audits.json?include=users,groups,tickets";
                 $errorCount = 0;
-                while(!$lastPage){
-                    $data = $prod->get($endpoint)->response;
-                    if ($prod->status != "200"){
-                        if ($errorCount <= 4) {
-                            Helper::saveError("soft", $searchId, $prod->status);
-                            usleep(500000);
-                            $errorCount++;
+                do {
+                    $data = $prod->get($p)->response;
+                        if ($prod->status != "200"){
+                            if ($errorCount <= 4) {
+                                Helper::saveError("soft", $searchId, $prod->status);
+                                usleep(500000);
+                                $errorCount++;
+                            } else {
+                                Helper::saveError("hard", $searchId, $prod->status);
+                                continue;
+                            }
                         } else {
-                            Helper::saveError("hard", $searchId, $prod->status);
-                            break;
+                            foreach($data["results"] as $t){
+                                $listType = "ZenDump\\" . $this->listObj;
+                                $ticket = $listType::find($t["id"]);
+                                if ($ticket === NULL){
+                                    $ticket = new $listType;
+                                    $ticket->id = $t["id"];
+                                    $ticket->save();
+                                }
+                            }
+                            }
+                            $reqTime = (microtime(true) - $reqStart) * 1000000;
+                            if ($reqTime < $sleepDefault){
+                                $sleepTime = $sleepDefault - $reqTime;
+                                usleep($sleepTime);
+                            }
                         }
-                    } else {
-                        $ticketData = $data["tickets"][0];
-                        Helper::saveTicket($ticketData);
-                        Helper::saveUser($data["users"]);
-                        $events = $data["audits"];
-                        Helper::saveComments($events, $ticketData["id"]);
-                        $reqTime = (microtime(true) - $reqStart) * 1000000;
-                        if ($reqTime < $sleepDefault){
-                            $sleepTime = $sleepDefault - $reqTime;
-                            usleep($sleepTime);
-                        }
-                        if (!$data["next_page"]){
-                            $lastPage = TRUE;
-                        } else {
-                            $endpoint = $data["next_page"];
-                        }
-                    }
-
-                }
+                    } while ($prod->status != "200");
             }
             echo "Thread {$this->threadId} processed $tCount tickets," .
             " exiting.", PHP_EOL;
