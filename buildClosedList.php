@@ -55,7 +55,10 @@ foreach ($dateArray as $k => $v){
     $search = "type:ticket created>$k created<$v fieldvalue:accnt*" .
       " status:closed";
     $endpoints[] = "/search.json?query=" . urlencode($search);
+    $data = $prod->get($endpoint)->response
+    echo $data["count"];
 }
+/*
 $threads = count($dateArray);
 $pool = new \Pool($threads, APIWorker::class);
 foreach ($endpoints as $endpoint){
@@ -66,3 +69,4 @@ $pool->shutdown();
 
 $endTime = round((microtime(true) - $startTime), 2);
 echo "Total run time: $endTime seconds.", PHP_EOL;
+*/
