@@ -24,7 +24,7 @@ $threads = 10;
 $threadId = 1;
 $dateArray = array(
     "2015-12-31" => "2016-01-22",
-    "2016-01-21" => "2016-02-04",
+/*    "2016-01-21" => "2016-02-04",
     "2016-02-03" => "2016-02-16",
     "2016-02-15" => "2016-03-08",
     "2016-03-07" => "2016-04-01",
@@ -50,7 +50,7 @@ $dateArray = array(
     "2017-03-11" => "2017-04-02",
     "2017-04-01" => "2017-04-18",
     "2017-04-17" => "2017-06-02",
-    //"2017-05-11" => "2017-06-02",
+    //"2017-05-11" => "2017-06-02", */
 );
 foreach ($dateArray as $k => $v){
     $search = "type:ticket created>$k created<$v fieldvalue:accnt*" .
@@ -67,6 +67,9 @@ foreach ($dateArray as $k => $v){
     $chunkSize = ceil($pageCount / $threads);
     echo "$endpoint", PHP_EOL;
     echo "Pages: $pageCount, Threads: $threads, Chunk Size: $chunkSize", PHP_EOL;
+    echo "Building ticket list...";, PHP_EOL;
+    echo " ", PHP_EOL;
+    $chunkArray = array_chunk($pages, $chunkSize);
     //echo $data["next_page"], PHP_EOL;
     //echo "Endpoint returned $pages with " . $data["count"] . "count.", PHP_EOL;
 }
