@@ -238,8 +238,8 @@ class SearchRequest extends \Threaded {
                                 $sleepTime = $sleepDefault - $reqTime;
                                 usleep($sleepTime);
                             }
-                        }
                     } while ($prod->status != "200");
+                }
             }
             echo "Thread {$this->threadId} processed $tCount tickets," .
             " exiting.", PHP_EOL;
