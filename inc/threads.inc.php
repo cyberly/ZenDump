@@ -244,7 +244,6 @@ class SearchRequest extends \Threaded {
             echo "Thread {$this->threadId} processed $tCount tickets," .
             " exiting.", PHP_EOL;
         }
-
 }
 
 

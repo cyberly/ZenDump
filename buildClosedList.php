@@ -70,6 +70,12 @@ foreach ($dateArray as $k => $v){
     echo "Building ticket list...", PHP_EOL;
     echo " ", PHP_EOL;
     $chunkArray = array_chunk($pages, $chunkSize);
+    $pool = new \Pool($threads, ApiWorker::class);
+    foreach ($chunkArray as $searches){
+        $pool->submit(new ApiRequest($searches, $threadId));
+        $threadId++;
+    }
+    $pool->shutdown();
     //var_dump($pages);
     /*foreach($pages as $page){
         $result = $prod->get($page)->response;
