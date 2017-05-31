@@ -73,7 +73,8 @@ foreach ($dateArray as $k => $v){
     //var_dump($pages);
     foreach($pages as $page){
         $result = $prod->get($page)->response;
-        //echo $page, PHP_EOL;
+        echo $page, PHP_EOL;
+        echo $prod->status, PHP_EOL;
         var_dump($result);
         echo " ", PHP_EOL;
     }
