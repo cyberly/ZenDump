@@ -97,12 +97,12 @@ class ListWork extends \Threaded{
             if ($prod->status != "200"){
                 if ($errorCount <= 4) {
                     Helper::saveError("soft", $this->endpoint, $prod->status);
-                    usleep(200000);
+                    usleep($defaultSleep);
                     $errorCount++;
                 } else {
                     Helper::saveError("hard", $this->endpoint, $prod->status);
                     $errorCount = 0;
-                    usleep(200000);
+                    usleep($defaultSleep);
                     continue;
                 }
             } else {
