@@ -58,7 +58,7 @@ foreach ($dateArray as $k => $v){
     $pages[] = $endpoint;
     $data = $prod->get($endpoint)->response;
     $pageCount = ceil($data["count"] / 100);
-    foreach ($pageCount as $page){
+    foreach (range(2, $pageCount) as $page){
         $endpoint = "/search,json?page=$page&$search";
         $pages[] = $endpoint;
         echo $endpoint, PHP_EOL;
