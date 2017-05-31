@@ -130,8 +130,9 @@ class ListWork extends \Threaded{
 class QueryList extends \Thread {
     public $ticketList;
 
-    public function __construct($threadId) {
+    public function __construct($threadId, $listType) {
         $this->threadId = $threadId;
+        $this->listType = $listType;
     }
 
     public function run() {
@@ -140,7 +141,8 @@ class QueryList extends \Thread {
         include("inc/models.inc.php");
         include("inc/helper.inc.php");
 
-        $this->ticketList = TicketList::select("id")->get()->toArray();
+        $listType = "ZenDump\\" . $this->listType;
+        $this->ticketList = $listType::select("id")->get()->toArray();
         //$this->ticketList = Error::select("id")->where('severity', '=', 'hard')->get()->toArray();
     }
 }
