@@ -73,7 +73,7 @@ foreach ($dateArray as $k => $v){
     //var_dump($pages);
     foreach($pages as $page){
         $result = $prod->get($page)->response;
-        echo "Result count: " . count($result["results"], PHP_EOL;
+        echo "Result count: " . count($result["results"]), PHP_EOL;
     }
     //echo $data["next_page"], PHP_EOL;
     //echo "Endpoint returned $pages with " . $data["count"] . "count.", PHP_EOL;
