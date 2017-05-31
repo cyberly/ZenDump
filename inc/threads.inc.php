@@ -122,7 +122,7 @@ class ListWork extends \Threaded{
                 }
             }
             if ($this->listObj == "TicketsClosed"){
-                usleep(1000000);
+                usleep(1800000);
             } else {
                 usleep(1000000);
             }
