@@ -54,7 +54,7 @@ $dateArray = array(
 foreach ($dateArray as $k => $v){
     $search = "type:ticket created>$k created<$v fieldvalue:accnt*" .
       " status:closed";
-    $endpoints = "/search.json?query=" . urlencode($search);
+    $endpoint = "/search.json?query=" . urlencode($search);
     $data = $prod->get($endpoint)->response;
     echo $data["count"];
 }
