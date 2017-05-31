@@ -211,39 +211,30 @@ class SearchRequest extends \Threaded {
             foreach ($this->pageList as $p){
                 $reqStart = microtime(true);
                 $errorCount = 0;
-                do {
-                    $data = $prod->get($p)->response;
-                        if ($prod->status != "200"){
-                            if ($errorCount <= 4) {
-                                Helper::saveError("soft", $searchId, $prod->status);
-                                usleep(500000);
-                                $errorCount++;
-                            } else {
-                                Helper::saveError("hard", $searchId, $prod->status);
-                                continue;
-                            }
-                        } else {
-                            foreach($data["results"] as $t){
-                                $listType = "ZenDump\\" . $this->listObj;
-                                $ticket = $listType::find($t["id"]);
-                                if ($ticket === NULL){
-                                    $ticket = new $listType;
-                                    $ticket->id = $t["id"];
-                                    $ticket->save();
-                                }
-                            }
-                        }
-                        $reqTime = (microtime(true) - $reqStart) * 1000000;
-                        if ($reqTime < $sleepDefault){
-                            $sleepTime = $sleepDefault - $reqTime;
-                            usleep($sleepTime);
-                        }
-                    } while ($prod->status != "200");
+                $data = $prod->get($p)->response;
+                if ($prod->status != "200"){
+                    Helper::saveError("hard", $searchId, $prod->status);
+                    $errorCount = 0;
+                }
+                foreach($data["results"] as $t){
+                    $listType = "ZenDump\\" . $this->listObj;
+                    $ticket = $listType::find($t["id"]);
+                    if ($ticket === NULL){
+                        $ticket = new $listType;
+                        $ticket->id = $t["id"];
+                        $ticket->save();
+                    }
+                }
+                $reqTime = (microtime(true) - $reqStart) * 1000000;
+                if ($reqTime < $sleepDefault){
+                    $sleepTime = $sleepDefault - $reqTime;
+                    usleep($sleepTime);
                 }
             }
-            echo "Thread {$this->threadId} processed $tCount tickets," .
-            " exiting.", PHP_EOL;
         }
+            echo "Thread {$this->threadId} processed $pCount pages," .
+            " exiting.", PHP_EOL;
+    }
 }
 
 
