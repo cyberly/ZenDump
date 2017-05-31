@@ -89,7 +89,7 @@ class ListWork extends \Threaded{
         include("inc/models.inc.php");
         include("inc/helper.inc.php");
         $prod = new zdCurl("production");
-        $sleepDefault = 2900000;
+        $sleepDefault = 3300000;
         $errorCount = 0;
         while(!$this->lastPage){
             $reqStart = microtime(true);
@@ -97,11 +97,12 @@ class ListWork extends \Threaded{
             if ($prod->status != "200"){
                 if ($errorCount <= 4) {
                     Helper::saveError("soft", $this->endpoint, $prod->status);
-                    usleep(100000);
+                    usleep(200000);
                     $errorCount++;
                 } else {
                     Helper::saveError("hard", $this->endpoint, $prod->status);
                     $errorCount = 0;
+                    usleep(200000);
                     continue;
                 }
             } else {
