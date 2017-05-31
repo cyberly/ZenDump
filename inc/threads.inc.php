@@ -89,8 +89,10 @@ class ListWork extends \Threaded{
         include("inc/models.inc.php");
         include("inc/helper.inc.php");
         $prod = new zdCurl("production");
+        $sleepDefault = 2900000;
         $errorCount = 0;
         while(!$this->lastPage){
+            $reqStart = microtime(true);
             $data = $prod->get($this->endpoint)->response;
             if ($prod->status != "200"){
                 if ($errorCount <= 4) {
@@ -120,11 +122,11 @@ class ListWork extends \Threaded{
                 } else {
                     $this->endpoint = $data["next_page"];
                 }
-            }
-            if ($this->listObj == "TicketsClosed"){
-                usleep(150000);
-            } else {
-                usleep(1500000);
+                $reqTime = (microtime(true) - $reqStart) * 1000000;
+                if ($reqTime < $sleepDefault){
+                    $sleepTime = $sleepDefault - $reqTime;
+                    usleep($sleepTime);
+                }
             }
         }
         echo "Thread " . $this->threadId .
