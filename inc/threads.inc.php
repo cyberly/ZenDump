@@ -122,9 +122,9 @@ class ListWork extends \Threaded{
                 }
             }
             if ($this->listObj == "TicketsClosed"){
-                usleep(80000);
+                usleep(120000);
             } else {
-                usleep(800000);
+                usleep(1000000);
             }
         }
         echo "Thread " . $this->threadId .
