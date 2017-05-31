@@ -60,11 +60,12 @@ foreach ($dateArray as $k => $v){
     $data = $prod->get($endpoint)->response;
     $pageCount = ceil($data["count"] / 100);
     foreach (range(2, $pageCount) as $page){
-        $endpoint = "/search,json?page=$page&$search";
-        $pages[] = $endpoint;
+        $endPage = "/search,json?page=$page&$search";
+        $pages[] = $endPage;
         //echo $endpoint, PHP_EOL;
     }
     $chunkSize = ceil($pageCount / $threads);
+    echo "$endpoint", PHP_EOL;
     echo "Pages: $pageCount, Threads: $threads, Chunk Size: $chunkSize", PHP_EOL;
     //echo $data["next_page"], PHP_EOL;
     //echo "Endpoint returned $pages with " . $data["count"] . "count.", PHP_EOL;
