@@ -56,7 +56,8 @@ foreach ($dateArray as $k => $v){
       " status:closed";
     $endpoint = "/search.json?query=" . urlencode($search);
     $data = $prod->get($endpoint)->response;
-    echo $data["count"];
+    $pages = ceil($data["count"] / 100);
+    echo "Endpoint returned $pages with " . $data["count"] . "count.", PHP_EOL;
 }
 /*
 $threads = count($dateArray);
