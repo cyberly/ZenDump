@@ -232,19 +232,19 @@ class SearchRequest extends \Threaded {
                                     $ticket->save();
                                 }
                             }
-                            }
-                            $reqTime = (microtime(true) - $reqStart) * 1000000;
-                            if ($reqTime < $sleepDefault){
-                                $sleepTime = $sleepDefault - $reqTime;
-                                usleep($sleepTime);
-                            }
+                        }
+                        $reqTime = (microtime(true) - $reqStart) * 1000000;
+                        if ($reqTime < $sleepDefault){
+                            $sleepTime = $sleepDefault - $reqTime;
+                            usleep($sleepTime);
+                        }
                     } while ($prod->status != "200");
                 }
             }
             echo "Thread {$this->threadId} processed $tCount tickets," .
             " exiting.", PHP_EOL;
         }
-    }
+
 }
 
 
