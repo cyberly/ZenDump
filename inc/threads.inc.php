@@ -190,6 +190,68 @@ class QueryAttachments extends \Thread {
     }
 }
 
+class SearchRequest extends \Threaded {
+    public $ticketId;
+    public $ticketList;
+
+    public function __construct($ticketList, $threadId){
+        $this->ticketList = $ticketList;
+        $this->threadId = $threadId;
+    }
+
+    public function run() {
+        require_once 'vendor/autoload.php';
+        include_once("inc/database.inc.php");
+        include_once("inc/models.inc.php");
+        include_once("inc/helper.inc.php");
+        $prod = new zdCurl("production");
+        $sleepDefault = 3000000;
+        if ($this->ticketList){
+            $tCount = count($this->ticketList);
+            foreach ($this->ticketList as $t){
+                $searchId = $t;//->id;
+                $lastPage = FALSE;
+                $reqStart = microtime(true);
+                $endpoint = "/tickets/$searchId/audits.json?include=users,groups,tickets";
+                $errorCount = 0;
+                while(!$lastPage){
+                    $data = $prod->get($endpoint)->response;
+                    if ($prod->status != "200"){
+                        if ($errorCount <= 4) {
+                            Helper::saveError("soft", $searchId, $prod->status);
+                            usleep(500000);
+                            $errorCount++;
+                        } else {
+                            Helper::saveError("hard", $searchId, $prod->status);
+                            break;
+                        }
+                    } else {
+                        $ticketData = $data["tickets"][0];
+                        Helper::saveTicket($ticketData);
+                        Helper::saveUser($data["users"]);
+                        $events = $data["audits"];
+                        Helper::saveComments($events, $ticketData["id"]);
+                        $reqTime = (microtime(true) - $reqStart) * 1000000;
+                        if ($reqTime < $sleepDefault){
+                            $sleepTime = $sleepDefault - $reqTime;
+                            usleep($sleepTime);
+                        }
+                        if (!$data["next_page"]){
+                            $lastPage = TRUE;
+                        } else {
+                            $endpoint = $data["next_page"];
+                        }
+                    }
+
+                }
+            }
+            echo "Thread {$this->threadId} processed $tCount tickets," .
+            " exiting.", PHP_EOL;
+        }
+    }
+}
+
+
 class AttachmentWork extends \Threaded{
     public $threadId;
 

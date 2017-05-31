@@ -20,6 +20,7 @@ $startTime = microtime(true);
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $ticketCount = FALSE;
+$threads = 10;
 $threadId = 1;
 $dateArray = array(
     "2015-12-31" => "2016-01-22",
@@ -61,8 +62,10 @@ foreach ($dateArray as $k => $v){
     foreach (range(2, $pageCount) as $page){
         $endpoint = "/search,json?page=$page&$search";
         $pages[] = $endpoint;
-        echo $endpoint, PHP_EOL;
+        //echo $endpoint, PHP_EOL;
     }
+    $chunkSize = ceil($pageCount / $threads);
+    echo "Pages: $pageCount, Threads: $threads, Chunk Size: $chunkSize", PHP_EOL;
     //echo $data["next_page"], PHP_EOL;
     //echo "Endpoint returned $pages with " . $data["count"] . "count.", PHP_EOL;
 }
