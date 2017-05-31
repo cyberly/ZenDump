@@ -95,10 +95,11 @@ class ListWork extends \Threaded{
             if ($prod->status != "200"){
                 if ($errorCount <= 4) {
                     Helper::saveError("soft", $this->endpoint, $prod->status);
-                    usleep(2000000);
+                    usleep(100000);
                     $errorCount++;
                 } else {
                     Helper::saveError("hard", $this->endpoint, $prod->status);
+                    $errorCount = 0;
                     continue;
                 }
             } else {
@@ -121,9 +122,9 @@ class ListWork extends \Threaded{
                 }
             }
             if ($this->listObj == "TicketsClosed"){
-                usleep(750000);
+                usleep(1000000);
             } else {
-                usleep(750000);
+                usleep(1000000);
             }
         }
         echo $this->threadId .
