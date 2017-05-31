@@ -120,6 +120,11 @@ class ListWork extends \Threaded{
                     $this->endpoint = $data["next_page"];
                 }
             }
+            if ($this->listObj == "TicketsClosed"){
+                usleep(200000)
+            } else {
+                usleep(100000)
+            }
         }
         echo $this->threadId .
           " completed, processed " . $this->ticketCount . " tickets.", PHP_EOL;
