@@ -89,7 +89,7 @@ class ListWork extends \Threaded{
         include("inc/models.inc.php");
         include("inc/helper.inc.php");
         $prod = new zdCurl("production");
-        $sleepDefault = 400000;
+        $sleepDefault = 500000;
         $errorCount = 0;
         while(!$this->lastPage){
             $reqStart = microtime(true);
