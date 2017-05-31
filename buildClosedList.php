@@ -55,9 +55,15 @@ foreach ($dateArray as $k => $v){
     $search = "type:ticket created>$k created<$v fieldvalue:accnt*" .
       " status:closed";
     $endpoint = "/search.json?query=" . urlencode($search);
+    $pages[] = $endpoint;
     $data = $prod->get($endpoint)->response;
-    $pages = ceil($data["count"] / 100);
-    echo $data["next_page"], PHP_EOL;
+    $pageCount = ceil($data["count"] / 100);
+    foreach ($pageCount as $page){
+        $endpoint = "/search,json?page=$page&$search";
+        $pages[] = $endpoint;
+        echo $endpoint, PHP_EOL;
+    }
+    //echo $data["next_page"], PHP_EOL;
     //echo "Endpoint returned $pages with " . $data["count"] . "count.", PHP_EOL;
 }
 /*
