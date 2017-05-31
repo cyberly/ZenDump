@@ -76,6 +76,7 @@ foreach ($dateArray as $k => $v){
         echo $page, PHP_EOL;
         if ($result["results"]){
             echo "Result count: " . count($result["results"]), PHP_EOL;
+            echo "Next page: " . $result["next_page"];
         } else {
             echo "Curl error: " . $prod->status, PHP_EOL;
         }
