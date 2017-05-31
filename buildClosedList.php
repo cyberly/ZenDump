@@ -72,10 +72,11 @@ foreach ($dateArray as $k => $v){
     $chunkArray = array_chunk($pages, $chunkSize);
     $pool = new \Pool($threads, ApiWorker::class);
     foreach ($chunkArray as $searches){
-        $pool->submit(new ApiRequest($searches, $threadId));
+        echo "\$pool->submit(new ApiRequest($searches, $threadId))";
         $threadId++;
+        var_dump(($searches));
     }
-    $pool->shutdown();
+    //$pool->shutdown();
     //var_dump($pages);
     /*foreach($pages as $page){
         $result = $prod->get($page)->response;
