@@ -70,6 +70,7 @@ foreach ($dateArray as $k => $v){
     echo "Building ticket list...", PHP_EOL;
     echo " ", PHP_EOL;
     $chunkArray = array_chunk($pages, $chunkSize);
+    var_dump($pages);
     //echo $data["next_page"], PHP_EOL;
     //echo "Endpoint returned $pages with " . $data["count"] . "count.", PHP_EOL;
 }
