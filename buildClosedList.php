@@ -20,7 +20,7 @@ $startTime = microtime(true);
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $ticketCount = FALSE;
-$threads = 10;
+$threads = 20;
 $threadId = 1;
 $dateArray = array(
     "2015-12-31" => "2016-01-22",
@@ -71,13 +71,13 @@ foreach ($dateArray as $k => $v){
     echo " ", PHP_EOL;
     $chunkArray = array_chunk($pages, $chunkSize);
     //var_dump($pages);
-    foreach($pages as $page){
+    /*foreach($pages as $page){
         $result = $prod->get($page)->response;
         echo $page, PHP_EOL;
         echo $prod->status, PHP_EOL;
         //var_dump($result);
         echo " ", PHP_EOL;
-    }
+    } */
     //echo $data["next_page"], PHP_EOL;
     //echo "Endpoint returned $pages with " . $data["count"] . "count.", PHP_EOL;
 }
