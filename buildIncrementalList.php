@@ -35,7 +35,7 @@ $start_time = $startQuery["start_time"];
 //$date = "2017-02-21 14:28:00";
 //$epoch = new \DateTime();
 //$start_time = $epoch->format('U');
-//echo $start_time, PHP_EOL;
+echo $start_time, PHP_EOL;
 
 echo "using " . date('r', $start_time) . " as starting point.", PHP_EOL;
 //$search = "type:user role:agent role:admin";

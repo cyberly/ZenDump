@@ -113,12 +113,12 @@ class ListWork extends \Threaded{
                     continue;
                 }
             } else {
-                /*if (!$this->ticketCount){
+                if (!$this->ticketCount){
                     $this->ticketCount = $data["count"];
-                    $realSleep = $sleepDefault / 1000000;
-                    echo "Thread " . $this->threadId . ", default sleep:  " .
-                        $realSleep . " seconds.". PHP_EOL;
-                } */
+                    //$realSleep = $sleepDefault / 1000000;
+                    //echo "Thread " . $this->threadId . ", default sleep:  " .
+                    //    $realSleep . " seconds.". PHP_EOL;
+                }
                 foreach($data["results"] as $t){
                     $listType = "ZenDump\\" . $this->listObj;
                     $ticket = $listType::find($t["id"]);
