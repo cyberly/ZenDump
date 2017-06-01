@@ -13,7 +13,6 @@
 */
 namespace ZenDump;
 include("inc/curl.inc.php");
-include("inc/helper.inc.php");
 include("inc/threads.inc.php");
 
 set_time_limit(0);
