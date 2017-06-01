@@ -13,7 +13,7 @@ $job = new CreateJob(1, "full");
 if($job->start()){
     $job->join();
 }
-$query = new QueryList(1, "TicketsClosed"); //set TicketsOpen for that.
+$query = new QueryList(1, "TicketsActive"); //set TicketsOpen for that.
 if ($query->start()){
     $query->join();
     $ticketIds = $query->ticketList;
