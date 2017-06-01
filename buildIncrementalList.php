@@ -45,7 +45,7 @@ while (!$lastPage){
     $data = $prod->get($endpoint)->response;
     var_dump($data["tickets"]);
     foreach($data["tickets"] as $t){
-        $ticket = new TicketList;
+        $ticket = new TicketsActive;
         $ticket->id = $t["id"];
         //$ticket->save();
     }
