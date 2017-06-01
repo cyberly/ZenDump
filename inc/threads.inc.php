@@ -89,7 +89,8 @@ class ListWork extends \Threaded{
         include("inc/models.inc.php");
         include("inc/helper.inc.php");
         $prod = new zdCurl("production");
-        $sleepDefault = 4000000;
+        usleep(rand(0.10000000));
+        $sleepDefault = 5000000;
         $errorCount = 0;
         while(!$this->lastPage){
             $reqStart = microtime(true);
@@ -108,8 +109,8 @@ class ListWork extends \Threaded{
             } else {
                 if (!$this->ticketCount){
                     $this->ticketCount = $data["count"];
-                    echo "Thread " . $this->threadId . "processing " .
-                        $this->ticketCount . "tickets.". PHP_EOL;
+                    echo "Thread " . $this->threadId . " processing " .
+                        $this->ticketCount . " tickets.". PHP_EOL;
                 }
                 foreach($data["results"] as $t){
                     $listType = "ZenDump\\" . $this->listObj;
