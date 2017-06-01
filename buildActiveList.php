@@ -18,7 +18,10 @@ include("inc/threads.inc.php");
 
 set_time_limit(0);
 $startTime = microtime(true);
-Helper::startJob("full_active");
+$job = new CreateJob(1, "full_active");
+if($job->start()){
+    $job->join();
+}
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $ticketCount = FALSE;
