@@ -16,6 +16,7 @@ include("inc/curl.inc.php");
 include("inc/threads.inc.php");
 
 set_time_limit(0);
+Helper::startJob("full_closed");
 $startTime = microtime(true);
 $prod = new zdCurl("production");
 $lastPage = FALSE;

@@ -7,9 +7,9 @@ $startTime = microtime(true);
 $worker = new ApiWorker();
 $worker->start();
 $threadId = 1;
-$threads = 28;
+$threads = 25;
 $ticketList = array();
-$job = new CreateJob(1, "full");
+$job = new CreateJob(1, "data_pull");
 if($job->start()){
     $job->join();
 }

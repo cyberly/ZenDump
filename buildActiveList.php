@@ -17,13 +17,13 @@ include("inc/threads.inc.php");
 
 set_time_limit(0);
 $startTime = microtime(true);
+Helper::startJob("full_active");
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $ticketCount = FALSE;
 $threadId = 1;
 $dateArray = array(
     "2015-12-31" => "2017-03-23", //3,888
-    //These three need to split out way more refined.
     "2017-03-22" => "2017-03-24", //2,809
     "2017-03-23" => "2017-04-04", //3,802
     "2017-04-03" => "2017-04-05", //3,271
