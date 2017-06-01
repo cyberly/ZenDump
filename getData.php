@@ -9,11 +9,12 @@ $worker->start();
 $threadId = 1;
 $threads = 25;
 $ticketList = array();
+/*
 $job = new CreateJob(1, "data_pull");
 if($job->start()){
     $job->join();
-}
-$query = new QueryList(1, "TicketsActive"); //set TicketsOpen for that.
+} */
+$query = new QueryList(1, "TicketsActive"); //set TicketsActive for that.
 if ($query->start()){
     $query->join();
     $ticketIds = $query->ticketList;
