@@ -90,7 +90,8 @@ class ListWork extends \Threaded{
         include("inc/helper.inc.php");
         $prod = new zdCurl("production");
         if ($this->listObj == "TicketsActive"){
-            $sleepDefault = 1000000;
+            //$sleepDefault = 1000000;
+            $sleepDefault = 0;
             //usleep(rand(0,500000));
         } else {
             $sleepDefault = 4000000;
