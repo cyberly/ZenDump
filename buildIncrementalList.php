@@ -43,11 +43,11 @@ $endpoint = "/incremental/tickets.json?start_time=$start_time";
 
 while (!$lastPage){
     $data = $prod->get($endpoint)->response;
-    var_dump($data["tickets"]);
+    //var_dump($data["tickets"]);
     foreach($data["tickets"] as $t){
         $ticket = new TicketsActive;
         $ticket->id = $t["id"];
-        //$ticket->save();
+        $ticket->save();
     }
     sleep(5);
     if (!$data["count"] < 1000){
