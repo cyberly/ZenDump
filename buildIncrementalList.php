@@ -22,7 +22,6 @@ include("inc/helper.inc.php");
 
 set_time_limit(0);
 $startTime = microtime(true);
-Helper::startJob("incremental");
 TicketsActive::truncate();
 $prod = new zdCurl("production");
 $lastPage = FALSE;
@@ -31,14 +30,8 @@ $startQuery = Meta::select("start_time")
   ->first()
   ->toArray();
 $start_time = $startQuery["start_time"];
-//$date = date("Y-m-d H:i:s");
-//$date = "2017-02-21 14:28:00";
-//$epoch = new \DateTime();
-//$start_time = $epoch->format('U');
-echo $start_time, PHP_EOL;
-
+Helper::startJob("incremental");
 echo "using " . date('r', $start_time) . " as starting point.", PHP_EOL;
-//$search = "type:user role:agent role:admin";
 $endpoint = "/incremental/tickets.json?start_time=$start_time";
 
 while (!$lastPage){
@@ -58,9 +51,3 @@ while (!$lastPage){
     }
 }
 echo "Added $ticketCount tickets for indexing.", PHP_EOL;
-
-//$data = $prod->get($endpoint)->response;
-//var_dump($data);
-//foreach ($data["tickets"] as $ticket){
-    //echo $ticket["id"], PHP_EOL;
-//}
