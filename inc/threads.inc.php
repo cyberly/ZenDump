@@ -90,8 +90,8 @@ class ListWork extends \Threaded{
         include("inc/helper.inc.php");
         $prod = new zdCurl("production");
         if ($this->listObj == "TicketsActive"){
-            $sleepDefault = 900000;
-            usleep(rand(0,1000000));
+            $sleepDefault = 500000;
+            //usleep(rand(0,500000));
         } else {
             $sleepDefault = 4000000;
             usleep(rand(0,15000000));
@@ -112,12 +112,12 @@ class ListWork extends \Threaded{
                     continue;
                 }
             } else {
-                if (!$this->ticketCount){
+                /*if (!$this->ticketCount){
                     $this->ticketCount = $data["count"];
                     $realSleep = $sleepDefault / 1000000;
                     echo "Thread " . $this->threadId . ", default sleep:  " .
                         $realSleep . " seconds.". PHP_EOL;
-                }
+                } */
                 foreach($data["results"] as $t){
                     $listType = "ZenDump\\" . $this->listObj;
                     $ticket = $listType::find($t["id"]);
