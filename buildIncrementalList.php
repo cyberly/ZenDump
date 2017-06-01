@@ -27,7 +27,7 @@ TicketsActive::truncate();
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $startQuery = Meta::select("start_time")
-  ->orderBy("start_time")
+  ->orderBy("start_time", "desc")
   ->first()
   ->toArray();
 $start_time = $startQuery["start_time"];
@@ -37,7 +37,7 @@ $start_time = $startQuery["start_time"];
 //$start_time = $epoch->format('U');
 //echo $start_time, PHP_EOL;
 
-
+echo "using " . date('r', $start_time) . " as starting point.", PHP_EOL;
 //$search = "type:user role:agent role:admin";
 $endpoint = "/incremental/tickets.json?start_time=$start_time";
 
@@ -57,7 +57,7 @@ while (!$lastPage){
         $endpoint = $data["next_page"];
     }
 }
-echo $ticketCount, PHP_EOL;
+echo "Added $ticketCount tickets for indexing.", PHP_EOL;
 
 //$data = $prod->get($endpoint)->response;
 //var_dump($data);
