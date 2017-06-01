@@ -23,7 +23,7 @@ include("inc/helper.inc.php");
 set_time_limit(0);
 $startTime = microtime(true);
 Helper::startJob("incremental");
-TicketList::truncate();
+TicketsActive::truncate();
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $startQuery = Meta::select("start_time")
