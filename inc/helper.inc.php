@@ -28,6 +28,9 @@ class Helper{
         $attachmentId = $a["attachment_id"];
         $dir = $baseDir . "/" . $ticketId;
         $path = $baseDir . "/" . $ticketId . "/" . $attachmentId . "-" . $file;
+        if (file_exists($path)){
+            return 0;
+        }
         $errorCount = 0;
         while ($prod->status != "200"){
             $fileData = $prod->getFile($url)->response;
@@ -38,7 +41,7 @@ class Helper{
             }
             if ($errorCount >= 4){
                 Helper::saveError("att-hard", $attachmentId, $prod->status);
-                break;
+                continue;
             }
         }
         if (!file_exists($dir)){
