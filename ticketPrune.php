@@ -50,7 +50,7 @@ foreach ($ticketList as $t){
                 ->where("user_id", "=", $id)
                 ->get()
                 ->toArray();
-            if (isset($role["role"]) && $role["role"] == "end-user"){
+            if (isset($role[0]["role"]) && $role[0]["role"] == "end-user"){
                 $customeReply = TRUE;
                 echo "Customer reply!";
             }
