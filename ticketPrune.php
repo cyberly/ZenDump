@@ -52,7 +52,7 @@ foreach ($ticketList as $t){
                 ->toArray();
             if (isset($role[0]["role"]) && $role[0]["role"] == "end-user"){
                 $customeReply = TRUE;
-                echo "Customer reply!". PHP_EOL;
+                //echo "Customer reply!". PHP_EOL;
             }
         }
         if ($customerReply == FALSE){
