@@ -46,17 +46,19 @@ foreach ($ticketList as $t){
                 ->where("user_id", "=", $id)
                 ->get()
                 ->toArray();
-            //var_dump($role);
-            //if ($role["role"] == "end-user"){
-            //    $customeReply = TRUE;
-            //}
+            if (isset($role["role"]) && $role["role"] == "end-user"){
+                $customeReply = TRUE;
+            }
         }
         if (!$customerReply){
-            echo "Removing ticket" . $t["ticket_id"] .
-                ", no customer replies.", PHP_EOL;
+            $lol = 1;
+            //echo "Ticket" . $t["ticket_id"] .
+            //    "will be removed.", PHP_EOL;
             //Ticket::where("ticket_id", "=", $t["ticket_id"])->delete();
             //Comment::where("ticket_id", "=", $t["ticket_id"])->delete();
             //Attachment::where("ticket_id", "=", $t["ticket_id"])->delete();
+        } else {
+            echo "Ticket " . $t["ticket_id"] . "excluded from prune.", PHP_EOL;
         }
     }
 }
