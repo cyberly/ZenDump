@@ -37,7 +37,6 @@ foreach ($ticketList as $t){
             ])->get()->toArray();
     //Assume less than 2 commments is inactive
     //Check user role if more than two.
-    var_dump($comments);
     if (count($comments) > 2){
         $customerReply = FALSE;
         foreach ($comments as $c){
