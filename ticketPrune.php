@@ -41,7 +41,7 @@ foreach ($ticketList as $t){
         $customerReply = FALSE;
         foreach ($comments as $c){
             $id = $c["author_id"];
-            $role = Users::select("role")
+            $role = User::select("role")
                 ->where("user_id", "=", $id)
                 ->get()
                 ->toArray();
