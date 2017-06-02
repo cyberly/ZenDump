@@ -45,9 +45,10 @@ foreach ($ticketList as $t){
                 ->where("user_id", "=", $id)
                 ->get()
                 ->toArray();
-            if ($role["role"] == "end-user"){
-                $customeReply = TRUE;
-            }
+            var_dump($role);
+            //if ($role["role"] == "end-user"){
+            //    $customeReply = TRUE;
+            //}
         }
         if (!$customerReply){
             echo "Removing ticket" . $t["ticket_id"] .
