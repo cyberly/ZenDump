@@ -20,6 +20,7 @@ include("inc/models.inc.php");
 
 /* Prune tickets with Monitoring tag without a customer response */
 $ticketList = Ticket::select("ticket_id", "tags")->get()->toArray();
+var_dump($ticketList);
 foreach ($ticketList as $t){
     $tagArray = str_getcsv($t["tags"]);
     if (!in_array("monitoring", $tagArray)){
@@ -45,7 +46,7 @@ foreach ($ticketList as $t){
                 ->where("user_id", "=", $id)
                 ->get()
                 ->toArray();
-            var_dump($role);
+            //var_dump($role);
             //if ($role["role"] == "end-user"){
             //    $customeReply = TRUE;
             //}
