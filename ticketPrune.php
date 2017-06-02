@@ -19,19 +19,14 @@ include("inc/models.inc.php");
 
 
 /* Prune tickets with Monitoring tag without a customer response */
-$testString =   "auth_by_customer_ticketlink,autoclose_disable," .
-                "enterprise,system_credit_card_redaction,team_falcon," .
-                "monitoring";
-
-$tagArray = str_getcsv($testString);
-$ticketList = Tickets::select("ticket_id", "tags")->get()->toArray();
+$ticketList = Ticket::select("ticket_id", "tags")->get()->toArray();
 foreach ($ticketList as $t){
     $tagArray = str_getcsv($t["tags"]);
     if (!in_array("monitoring", $tagArray)){
         //Kill the iteration here if there's no monitoring tag.
         continue;
     }
-    $comments = Comments::select(
+    $comments = Comment::select(
         "comment_id",
         "ticket_id",
         "public",
@@ -57,9 +52,9 @@ foreach ($ticketList as $t){
         if (!$customerReply){
             echo "Removing ticket" . $t["ticket_id"] .
                 ", no customer replies.", PHP_EOL;
-            //Tickets::where("ticket_id", "=", $t["ticket_id"])->delete();
-            //Comments::where("ticket_id", "=", $t["ticket_id"])->delete();
-            //Attachments::where("ticket_id", "=", $t["ticket_id"])->delete();
+            //Ticket::where("ticket_id", "=", $t["ticket_id"])->delete();
+            //Comment::where("ticket_id", "=", $t["ticket_id"])->delete();
+            //Attachment::where("ticket_id", "=", $t["ticket_id"])->delete();
         }
     }
 }
