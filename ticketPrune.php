@@ -50,6 +50,7 @@ foreach ($ticketList as $t){
                 ->where("user_id", "=", $id)
                 ->get()
                 ->toArray();
+            var_dump($role);
             if (isset($role["role"]) && $role["role"] == "end-user"){
                 $customeReply = TRUE;
             }
