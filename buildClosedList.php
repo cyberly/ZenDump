@@ -55,7 +55,6 @@ $dateArray = array(
     "2017-03-28" => "2017-04-12", //12,554
     "2017-04-11" => "2017-04-26", //12,375
     "2017-04-25" => "2017-06-02", //4,645
-    //"2017-05-11" => "2017-06-02",
 );
 foreach ($dateArray as $k => $v){
     $search = "type:ticket created>$k created<$v fieldvalue:accnt*" .
