@@ -19,7 +19,10 @@ include("inc/models.inc.php");
 
 
 /* Prune tickets with Monitoring tag without a customer response */
+$pruned = 0;
 $ticketList = Ticket::select("ticket_id", "tags")->get()->toArray();
+echo "Parsing " . count($ticketList) .
+    " tickets for unanswer monnotes.", PHP_EOL;
 foreach ($ticketList as $t){
     $tagArray = str_getcsv($t["tags"]);
     if (!in_array("monitoring", $tagArray)){
@@ -50,7 +53,7 @@ foreach ($ticketList as $t){
             }
         }
         if (!$customerReply){
-            $lol = 1;
+            $pruned++;
             //echo "Ticket" . $t["ticket_id"] .
             //    "will be removed.", PHP_EOL;
             //Ticket::where("ticket_id", "=", $t["ticket_id"])->delete();
@@ -61,3 +64,4 @@ foreach ($ticketList as $t){
         }
     }
 }
+echo "Pruned $pruned unanswered monnotes.", PHP_EOL;
