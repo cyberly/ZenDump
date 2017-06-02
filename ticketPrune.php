@@ -20,7 +20,6 @@ include("inc/models.inc.php");
 
 /* Prune tickets with Monitoring tag without a customer response */
 $ticketList = Ticket::select("ticket_id", "tags")->get()->toArray();
-var_dump($ticketList);
 foreach ($ticketList as $t){
     $tagArray = str_getcsv($t["tags"]);
     if (!in_array("monitoring", $tagArray)){
@@ -38,6 +37,7 @@ foreach ($ticketList as $t){
             ])->get()->toArray();
     //Assume less than 2 commments is inactive
     //Check user role if more than two.
+    var_dump($comments);
     if (count($comments) > 2){
         $customerReply = FALSE;
         foreach ($comments as $c){
