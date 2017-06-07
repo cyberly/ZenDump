@@ -15,6 +15,7 @@ namespace ZenDump;
 include("inc/curl.inc.php");
 include("inc/threads.inc.php");
 include("inc/helper.inc.php");
+include("inc/models.inc.php");
 
 set_time_limit(0);
 Helper::startJob("full_closed");
