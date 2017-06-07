@@ -12,16 +12,15 @@
 *	¯\_(ツ)_/¯
 */
 namespace ZenDump;
-require 'vendor/autoload.php';
-include("inc/database.inc.php");
 include("inc/curl.inc.php");
 include("inc/threads.inc.php");
-include("inc/helper.inc.php");
-include("inc/models.inc.php");
 
 set_time_limit(0);
-Helper::startJob("full_closed");
 $startTime = microtime(true);
+$job = new CreateJob(1, "full_active");
+if($job->start()){
+    $job->join();
+}
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $ticketCount = FALSE;
