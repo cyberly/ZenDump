@@ -92,7 +92,7 @@ class ListWork extends \Threaded{
         if ($this->listObj == "TicketsActive"){
             $sleepDefault = 0;
         } else {
-            $sleepDefault = 5000000;
+            $sleepDefault = 6000000;
             usleep(rand(0,15000000));
         }
         $errorCount = 0;
