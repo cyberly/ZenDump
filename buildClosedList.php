@@ -13,6 +13,7 @@
 */
 namespace ZenDump;
 require 'vendor/autoload.php';
+include("inc/database.inc.php");
 include("inc/curl.inc.php");
 include("inc/threads.inc.php");
 include("inc/helper.inc.php");
