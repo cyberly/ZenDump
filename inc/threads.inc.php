@@ -25,7 +25,7 @@ class ApiRequest extends \Threaded {
         include_once("inc/models.inc.php");
         include_once("inc/helper.inc.php");
         $prod = new zdCurl("production");
-        $sleepDefault = 3000000;
+        $sleepDefault = 4000000;
         if ($this->ticketList){
             $tCount = count($this->ticketList);
             foreach ($this->ticketList as $t){
