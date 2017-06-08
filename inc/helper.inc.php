@@ -9,7 +9,7 @@ class Helper{
 
     public static function dumpJson($array, $folder){
         if (!file_exists("./dumps/$folder")){
-            mkdir("./dumps/$folder", 0755);
+            mkdir("./dumps/$folder", 0755, true);
         }
         $s =   array(" ","::",":","(",")","/");
         $r =  array("_","-"."","","","_");
