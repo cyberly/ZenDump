@@ -59,9 +59,9 @@ foreach ($ticketList as $t){
             $pruned++;
             //echo "Ticket" . $t["ticket_id"] .
             //    "will be removed.", PHP_EOL;
-            //Ticket::where("ticket_id", "=", $t["ticket_id"])->delete();
-            //Comment::where("ticket_id", "=", $t["ticket_id"])->delete();
-            //Attachment::where("ticket_id", "=", $t["ticket_id"])->delete();
+            Ticket::where("ticket_id", "=", $t["ticket_id"])->delete();
+            Comment::where("ticket_id", "=", $t["ticket_id"])->delete();
+            Attachment::where("ticket_id", "=", $t["ticket_id"])->delete();
         } else {
             echo "Ticket " . $t["ticket_id"] . "excluded from prune.", PHP_EOL;
         }
