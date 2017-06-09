@@ -14,7 +14,7 @@ function format_echo() {
 #    exit 1
 #fi
 ERRORS=0
-for TABLE in $(cat table_list.txt); do
+for TABLE in $(cat scripts/table_list.txt); do
     ROWS=$(mysql zendump -e "select count(*) from ${TABLE}\G" | \
         tail -1 | \
         cut -f2 -d\: | \
