@@ -26,6 +26,7 @@ for TABLE in $(cat scripts/table_list.txt); do
         let ERRORS=${ERRORS}+1
     fi
 done
+echo " "
 if [[ ${ERRORS} -eq 0 ]]; then
     format_echo ${GREEN} "All tables seem to contain valid data."
 else
