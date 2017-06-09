@@ -17,10 +17,10 @@ include("inc/threads.inc.php");
 
 set_time_limit(0);
 $startTime = microtime(true);
-$job = new CreateJob(1, "full_active");
+/*$job = new CreateJob(1, "full_active");
 if($job->start()){
     $job->join();
-}
+} */
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $ticketCount = FALSE;
@@ -39,7 +39,7 @@ $dateArray = array(
     "2017-05-16" => "2017-05-22", //4,255
     "2017-05-22" => "2017-05-27", //4,346
     "2017-05-26" => "2017-06-01", //4,089
-    "2017-05-31" => "2017-06-02", //500 or so, move this forward.
+    "2017-05-31" => "2017-06-09", //500 or so, move this forward.
 );
 foreach ($dateArray as $k => $v){
     $search = "type:ticket created>$k created<$v fieldvalue:accnt*" .
