@@ -20,7 +20,7 @@ for TABLE in $(cat scripts/table_list.txt); do
         cut -f2 -d\: | \
         sed 's/ //g')
     if [[ ${ROWS} -gt 0 ]]; then
-        format_echo ${GREEN} "${tABLE} contains data."
+        format_echo ${GREEN} "${TABLE} contains data."
     else
         format_echo ${RED} "${TABLE} contains no data."
         let ERRORS=${ERRORS}+1
