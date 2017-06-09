@@ -1,5 +1,4 @@
 article_attachments
-article_labels
 articles
 attachments
 automation_actions
@@ -15,8 +14,6 @@ macros
 sections
 targets
 tickets
-tickets_active
-tickets_closed
 trigger_actions
 trigger_conditions
 triggers
