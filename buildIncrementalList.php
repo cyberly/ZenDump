@@ -43,7 +43,7 @@ while (!$lastPage){
         $ticket->save();
     }
     sleep(5);
-    if (!$data["count"] < 1000){
+    if (!$data["count"] = 1000){
         $lastPage = TRUE;
     } else {
         $endpoint = $data["next_page"];
