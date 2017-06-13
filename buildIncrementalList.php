@@ -38,9 +38,12 @@ while (!$lastPage){
     $data = $prod->get($endpoint)->response;
     $ticketCount = $data["count"];
     foreach($data["tickets"] as $t){
-        $ticket = new TicketsActive;
-        $ticket->id = $t["id"];
-        $ticket->save();
+        $ticket = TicketsActive::find($t["id"]);
+        if ($ticket == NULL){
+            $ticket = new TicketsActive;
+            $ticket->id = $t["id"];
+            $ticket->save();
+        }
     }
     sleep(5);
     if (!$data["count"] = 1000){
