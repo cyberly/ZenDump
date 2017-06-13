@@ -47,7 +47,7 @@ while (!$lastPage){
         }
     }
     sleep(5);
-    if ($data["count"] = 1000){
+    if ($data["count"] == 1000){
         $endpoint = $data["next_page"];
     } else {
         $lastPage = TRUE;
