@@ -46,10 +46,10 @@ while (!$lastPage){
         }
     }
     sleep(5);
-    if (!$data["count"] = 1000){
-        $lastPage = TRUE;
-    } else {
+    if ($data["count"] = 1000){
         $endpoint = $data["next_page"];
+    } else {
+        $lastPage = TRUE;
     }
 }
 echo "Added $ticketCount tickets for indexing.", PHP_EOL;
