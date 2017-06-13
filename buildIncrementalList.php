@@ -36,6 +36,9 @@ $endpoint = "/incremental/tickets.json?start_time=$start_time";
 
 while (!$lastPage){
     $data = $prod->get($endpoint)->response;
+    if ($data["count"] == NULL){
+        break;
+    }
     $ticketCount = $data["count"];
     foreach($data["tickets"] as $t){
         $ticket = TicketsActive::find($t["id"]);
