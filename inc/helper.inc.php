@@ -33,6 +33,12 @@ class Helper{
         }
         $errorCount = 0;
         while ($prod->status != "200"){
+            if ($prod->status == "301"){
+                Helper::saveError("att-notfound", $attachmentId, "404");
+            }
+            if ($prod->status == "302"){
+                Helper::saveError("att-notfound", $attachmentId, "404");
+            }
             $fileData = $prod->getFile($url)->response;
             if ($prod->status != 200){
                 Helper::saveError("att-soft", $attachmentId, $prod->status);
