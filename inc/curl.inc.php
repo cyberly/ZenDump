@@ -46,18 +46,18 @@ class ZdCurl {
         break;
       case "POST":
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataEncoded);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
           'Content-type: application/json',
-          'Content-length: ' . strlen($dataEncoded)
+          'Content-length: ' . strlen($data)
         ));
         break;
       case "PUT":
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataEncoded);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
           'Content-type: application/json',
-          'Content-length: ' . strlen($dataEncoded)
+          'Content-length: ' . strlen($data)
         ));
         break;
       case "DELETE":
@@ -98,12 +98,12 @@ class ZdCurl {
   }
 
   public function post($endpoint, $data) {
-    $resp = $this->doCurl($endpoint, "POST", $data);
+    $resp = $this->doCurl($this->isEndpoint($endpoint), "POST", $data);
     $this->response = $resp;
   }
 
   public function put($endpoint, $data) {
-    $resp = $this->doCurl($endpoint, "PUT", $data);
+    $resp = $this->doCurl($this->isEndpoint($endpoint), "PUT", $data);
     $this->response = $resp;
   }
 
