@@ -7,9 +7,8 @@ $startTime = microtime(true);
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $ticketCount = FALSE;
-$searchArgs =   "type:ticket updated_at<2017-08-01 updated_at>2017-07-029 " .
-                "status:pending status:solved -group:terminations " .
-                "-group:security";
+$searchArgs = "type:ticket created>2015-12-31 updated_at<2017-08-01 " .
+              "status:pending -tags:lwsupervisor";
 $search = "/search.json?query=" . urlencode($searchArgs);
 $updateMany = "/tickets/update_many.json?ids=";
 while(!$lastPage){
@@ -30,26 +29,25 @@ while(!$lastPage){
 $ticketTotal = count($tickets);
 $searchTime = round((microtime(true) - $startTime), 2);
 echo "Retrieved $ticketTotal tickets in $searchTime seconds.", PHP_EOL;
-$chunkArray = array_chunk($tickets, 100);
+$chunkArray = array_chunk($tickets, 1);
 foreach ($chunkArray as $array){
-  $ticketStr = join(',', $array);
+  $ticketsStr = join(',', $array);
   $endpoint = $updateMany . $ticketsStr;
-  $commentBody = "butts lol"
+  $commentBody =  "This ticket has been closed in preparation of upcoming " .
+                  "SFDC migration.";
   $payload = array(
     "ticket"            => array(
-        "status"        =>  "open",
+        "status"        =>  "closed",
         "comment"       =>  array(
             "body"      =>  $commentBody,
             "public"    => FALSE
         ),
       "additional_tags" => array(
-        "test_tag"
+        "test_tag", "lw_close_silent"
       )
     )
   );
-  //$data = $prod->put($endpoint, json_encode($payload));
-  //echo $prod->status, PHP_EOL;
-  echo $ticketStr, PHP_EOL;
+  $data = $prod->put($endpoint, json_encode($payload));
 }
 $endTime = round((microtime(true) - $startTime), 2);
 echo "Closed $ticketTotal tickets in $endTime seconds.", PHP_EOL;
