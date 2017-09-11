@@ -26,7 +26,7 @@ $lastPage = FALSE;
 $ticketCount = FALSE;
 $threadId = 1;
 $dateArray = array(
-    "2015-12-31" => "2016-02-03", //25,527
+/*    "2015-12-31" => "2016-02-03", //25,527
     "2016-02-02" => "2016-03-04", //25,515
     "2016-03-03" => "2016-04-08", //25,353
     "2016-04-07" => "2016-05-09", //25,439
@@ -47,11 +47,12 @@ $dateArray = array(
     "2017-05-23" => "2017-06-19", //25,249
     "2017-06-18" => "2017-07-14", //26,xxx
     "2017-07-13" => "2017-09-11", //24,914
-    "2017-09-10" => "2017-09-30", //24,914
+    "2017-09-10" => "2017-09-30", //24,914 */
+    "2015-12-31" => "24hours"
 
 );
 foreach ($dateArray as $k => $v){
-    $search = "type:ticket created>$k created<$v fieldvalue:accnt*" .
+    $search = "type:ticket created>$k updated>$v fieldvalue:accnt*" .
       " status:closed";
     $endpoints[] = "/search.json?query=" . urlencode($search);
 }

@@ -7,8 +7,8 @@ $startTime = microtime(true);
 $prod = new zdCurl("production");
 $lastPage = FALSE;
 $ticketCount = FALSE;
-$searchArgs = "type:ticket created>2015-12-31 updated_at<2017-08-01 " .
-              "status:pending -tags:lwsupervisor -tags:customer-advocacy";
+$searchArgs = "type:ticket created>2015-12-31 updated_at<96hours " .
+              "status:solved -tags:lwsupervisor -tags:customer-advocacy";
 $search = "/search.json?query=" . urlencode($searchArgs);
 $updateMany = "/tickets/update_many.json?ids=";
 while(!$lastPage){
