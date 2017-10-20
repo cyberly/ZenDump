@@ -40,7 +40,6 @@ while(!$lastPage){
             $a["label_names"] = implode(', ', $a["label_names"]);
         }
         unset($a["id"]);
-        unset($a["manageable_by"]);
         foreach ($a as $k => $v){
             if (!empty($v)){
                 $article->$k = $v;
@@ -93,6 +92,7 @@ while(!$lastPage){
         $section = new Section;
         $section->section_id = $s["id"];
         unset($s["id"]);
+        unset($s["manageable_by"]);
         foreach ($s as $k => $v){
             if (!empty($v)){
                 $section->$k = $v;
