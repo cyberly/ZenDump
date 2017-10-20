@@ -93,6 +93,7 @@ while(!$lastPage){
         $section->section_id = $s["id"];
         unset($s["id"]);
         unset($s["manageable_by"]);
+        unset($s["user_segment_id"]);
         foreach ($s as $k => $v){
             if (!empty($v)){
                 $section->$k = $v;
